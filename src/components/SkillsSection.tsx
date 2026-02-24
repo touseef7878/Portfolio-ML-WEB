@@ -78,7 +78,6 @@ const SkillsSection = () => {
                       </span>
                     ))}
                   </div>
-                  <p className="text-xs text-muted-foreground mt-4 italic">Hover to learn more</p>
                 </div>
 
                 {/* Back of card */}
