@@ -10,15 +10,57 @@ const ContactSection = () => {
   const { ref, isVisible } = useScrollAnimation();
   const { toast } = useToast();
   const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (!form.name || !form.email || !form.message) {
       toast({ title: "Please fill in all fields", variant: "destructive" });
       return;
     }
-    toast({ title: "Message sent!", description: "Thanks for reaching out. I'll get back to you soon." });
-    setForm({ name: "", email: "", message: "" });
+
+    setIsSubmitting(true);
+
+    try {
+      // Using Web3Forms - Free email service
+      // Get your access key from https://web3forms.com/
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: "084c5ccf-c73b-4194-b768-1be696b13e28", // Replace with your Web3Forms access key
+          name: form.name,
+          email: form.email,
+          message: form.message,
+          subject: `New Portfolio Contact from ${form.name}`,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast({ 
+          title: "Message sent successfully!", 
+          description: "Thanks for reaching out. I'll get back to you soon." 
+        });
+        setForm({ name: "", email: "", message: "" });
+      } else {
+        throw new Error("Failed to send message");
+      }
+    } catch (error) {
+      console.error("Email send error:", error);
+      toast({ 
+        title: "Failed to send message", 
+        description: "Please try again or contact me directly via email.",
+        variant: "destructive" 
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -40,6 +82,7 @@ const ContactSection = () => {
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               className="bg-white/5 border-white/10 focus:border-primary/50"
+              disabled={isSubmitting}
             />
             <Input
               type="email"
@@ -47,6 +90,7 @@ const ContactSection = () => {
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               className="bg-white/5 border-white/10 focus:border-primary/50"
+              disabled={isSubmitting}
             />
             <Textarea
               placeholder="Your Message"
@@ -54,9 +98,14 @@ const ContactSection = () => {
               value={form.message}
               onChange={(e) => setForm({ ...form, message: e.target.value })}
               className="bg-white/5 border-white/10 focus:border-primary/50"
+              disabled={isSubmitting}
             />
-            <Button type="submit" className="rounded-full bg-primary hover:bg-primary/80">
-              Send Message
+            <Button 
+              type="submit" 
+              disabled={isSubmitting}
+              className="rounded-full bg-primary hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? "Sending..." : "Send Message"}
             </Button>
           </form>
 
