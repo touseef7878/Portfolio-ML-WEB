@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 230 60% 8%;
+    --foreground: 210 40% 96%;
+
+    --card: 230 40% 12%;
+    --card-foreground: 210 40% 96%;
+
+    --popover: 230 40% 12%;
+    --popover-foreground: 210 40% 96%;
+
+    --primary: 250 80% 65%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 220 50% 18%;
+    --secondary-foreground: 210 40% 96%;
+
+    --muted: 220 30% 16%;
+    --muted-foreground: 215 20% 60%;
+
+    --accent: 200 90% 55%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 230 30% 20%;
+    --input: 230 30% 20%;
+    --ring: 250 80% 65%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 230 60% 8%;
+    --sidebar-foreground: 210 40% 96%;
+    --sidebar-primary: 250 80% 65%;
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: 220 50% 18%;
+    --sidebar-accent-foreground: 210 40% 96%;
+    --sidebar-border: 230 30% 20%;
+    --sidebar-ring: 250 80% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-lg;
+  }
+
+  .glass-strong {
+    @apply bg-white/10 backdrop-blur-2xl border border-white/15 shadow-xl;
+  }
+
+  .glow-border {
+    @apply border border-white/10;
+    box-shadow: 0 0 15px hsl(250 80% 65% / 0.15), inset 0 0 15px hsl(250 80% 65% / 0.05);
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent;
+  }
+}
+
+@layer utilities {
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  .animate-float-delayed {
+    animation: float 8s ease-in-out 2s infinite;
+  }
+  .animate-float-slow {
+    animation: float 10s ease-in-out 4s infinite;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-20px) scale(1.05); }
+}
+
+@keyframes typewriter-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes loader-bar {
+  0% { width: 0%; margin-left: 0; }
+  50% { width: 100%; margin-left: 0; }
+  100% { width: 0%; margin-left: 100%; }
+}
