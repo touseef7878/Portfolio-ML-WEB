@@ -145,7 +145,7 @@ const HeroSection = () => {
             <a href="https://www.linkedin.com/in/touseef-ur-rehman-6b2888372" target="_blank" rel="noopener noreferrer" className="glass rounded-full p-3 md:p-4 hover:bg-primary/20 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-primary/20">
               <Linkedin size={18} className="md:w-[22px] md:h-[22px]" />
             </a>
-            <a href="https://wa.me/924476992071" target="_blank" rel="noopener noreferrer" className="glass rounded-full p-3 md:p-4 hover:bg-primary/20 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-primary/20">
+            <a href="https://wa.me/923476992071" target="_blank" rel="noopener noreferrer" className="glass rounded-full p-3 md:p-4 hover:bg-primary/20 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-primary/20">
               <MessageCircle size={18} className="md:w-[22px] md:h-[22px]" />
             </a>
           </div>

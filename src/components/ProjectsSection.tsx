@@ -19,6 +19,8 @@ const projects = [
     tags: ["Python", "Flask"],
     cat: "web" as Category,
     image: projectQuiz,
+    github: "https://github.com/touseef7878/AI-Quiz-APP",
+    demo: "#",
   },
   {
     title: "Library Management System",
@@ -26,6 +28,8 @@ const projects = [
     tags: ["Flask", "SQLite"],
     cat: "web" as Category,
     image: projectLibrary,
+    github: "https://github.com/touseef7878/Library-Management-System",
+    demo: "https://library-management-system-vq17.onrender.com/",
   },
   {
     title: "Sentiment Analyzer",
@@ -33,6 +37,8 @@ const projects = [
     tags: ["Python", "Flask", "NLTK"],
     cat: "aiml" as Category,
     image: projectSentiment,
+    github: "https://github.com/touseef7878/Sentiment-Analyzer",
+    demo: "https://sentiment-analyzer-cpwq.onrender.com/",
   },
   {
     title: "Loan Approval Prediction",
@@ -40,6 +46,8 @@ const projects = [
     tags: ["Python", "Scikit-learn"],
     cat: "aiml" as Category,
     image: projectLoan,
+    github: "https://github.com/touseef7878/Loan-Approval-Prediction",
+    demo: "#",
   },
   {
     title: "Student Score Predictor",
@@ -47,6 +55,8 @@ const projects = [
     tags: ["Python"],
     cat: "aiml" as Category,
     image: projectScores,
+    github: "https://github.com/touseef7878/Predicting-student-scores",
+    demo: "#",
   },
   {
     title: "E-Commerce App",
@@ -54,6 +64,8 @@ const projects = [
     tags: ["React", "Flask"],
     cat: "web" as Category,
     image: projectEcommerce,
+    github: "https://github.com/touseef7878/PRODIGY_FS_03",
+    demo: "#",
   },
   {
     title: "Chat Application",
@@ -61,6 +73,8 @@ const projects = [
     tags: ["React", "TypeScript", "Vite"],
     cat: "web" as Category,
     image: projectChat,
+    github: "https://github.com/touseef7878/PRODIGY_FS_04",
+    demo: "#",
   },
 ];
 
@@ -144,19 +158,25 @@ const ProjectsSection = () => {
                 </div>
                 <div className="flex gap-3">
                   <a
-                    href="#"
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="glass rounded-full p-2 hover:bg-primary/20 transition-colors"
                     aria-label="GitHub"
                   >
                     <Github size={16} />
                   </a>
-                  <a
-                    href="#"
-                    className="glass rounded-full p-2 hover:bg-primary/20 transition-colors"
-                    aria-label="Live demo"
-                  >
-                    <ExternalLink size={16} />
-                  </a>
+                  {project.demo !== "#" && (
+                    <a
+                      href={project.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="glass rounded-full p-2 hover:bg-primary/20 transition-colors"
+                      aria-label="Live demo"
+                    >
+                      <ExternalLink size={16} />
+                    </a>
+                  )}
                 </div>
               </div>
             </TiltCard>
