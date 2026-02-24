@@ -22,14 +22,14 @@ const AboutSection = () => {
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
         }`}
       >
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
+        <h2 className="text-2xl md:text-4xl font-bold text-center mb-3">
           About <span className="text-gradient">Me</span>
         </h2>
-        <p className="text-muted-foreground text-center mb-14 max-w-md mx-auto text-sm">
+        <p className="text-muted-foreground text-center mb-10 md:mb-14 max-w-md mx-auto text-xs md:text-sm px-4">
           A quick look at who I am and what I do
         </p>
 
-        <div className="glass rounded-3xl p-10 md:p-14 max-w-5xl mx-auto flex flex-col md:flex-row gap-12 items-center relative group hover:border-primary/20 transition-all duration-500">
+        <div className="glass rounded-2xl md:rounded-3xl p-6 md:p-14 max-w-5xl mx-auto flex flex-col md:flex-row gap-8 md:gap-12 items-center relative group hover:border-primary/20 transition-all duration-500">
           {/* Corner accents */}
           <div className="absolute top-0 left-0 w-20 h-20 border-t-2 border-l-2 border-primary/30 rounded-tl-3xl pointer-events-none" />
           <div className="absolute bottom-0 right-0 w-20 h-20 border-b-2 border-r-2 border-accent/30 rounded-br-3xl pointer-events-none" />
@@ -56,7 +56,7 @@ const AboutSection = () => {
                 src={profilePhoto}
                 alt="Touseef Ur Rehman"
                 loading="lazy"
-                className="w-48 h-48 md:w-56 md:h-56 object-cover"
+                className="w-40 h-40 md:w-56 md:h-56 object-cover"
               />
               {/* Shine effect overlay */}
               <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover/photo:opacity-100 transition-opacity duration-500 group-hover/photo:animate-shine" />
@@ -64,8 +64,8 @@ const AboutSection = () => {
           </div>
 
           {/* Text content */}
-          <div className="flex-1">
-            <p className="text-muted-foreground leading-relaxed mb-8 text-base md:text-lg">
+          <div className="flex-1 w-full">
+            <p className="text-muted-foreground leading-relaxed mb-6 md:mb-8 text-sm md:text-lg">
               I'm a passionate developer specializing in{" "}
               <span className="text-foreground font-semibold">
                 Python, AI/ML, and Full-Stack Web Development
@@ -76,17 +76,17 @@ const AboutSection = () => {
               and smart algorithms.
             </p>
 
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-2 md:gap-4">
               {stats.map((s, i) => (
                 <div
                   key={s.label}
-                  className="text-center glass rounded-xl p-5 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10 group/stat cursor-default"
+                  className="text-center glass rounded-lg md:rounded-xl p-3 md:p-5 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10 group/stat cursor-default"
                   style={{ animationDelay: `${i * 100}ms` }}
                 >
-                  <p className="text-3xl md:text-4xl font-bold text-gradient mb-1 group-hover/stat:scale-110 transition-transform duration-300">
+                  <p className="text-xl md:text-4xl font-bold text-gradient mb-0.5 md:mb-1 group-hover/stat:scale-110 transition-transform duration-300">
                     <AnimatedCounter end={s.value} isVisible={isVisible} />
                   </p>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">
+                  <p className="text-[10px] md:text-xs text-muted-foreground uppercase tracking-wider leading-tight">
                     {s.label}
                   </p>
                 </div>

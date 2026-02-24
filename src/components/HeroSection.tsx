@@ -102,51 +102,51 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/30" />
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-6 md:px-12 lg:px-20 flex items-center min-h-screen">
-        <div className="max-w-2xl flex flex-col gap-8 pl-2 md:pl-6 lg:pl-10">
+      <div className="relative z-10 container mx-auto px-4 md:px-12 lg:px-20 flex items-center min-h-screen">
+        <div className="max-w-2xl flex flex-col gap-6 md:gap-8 pl-0 md:pl-6 lg:pl-10">
           <div>
-            <p className="text-muted-foreground text-lg md:text-xl mb-3 tracking-wider uppercase">Hello, I'm</p>
-            <h1 className="text-5xl md:text-7xl font-bold mb-5 leading-tight">
+            <p className="text-muted-foreground text-sm md:text-xl mb-2 md:mb-3 tracking-wider uppercase">Hello, I'm</p>
+            <h1 className="text-3xl md:text-7xl font-bold mb-3 md:mb-5 leading-tight">
               Touseef Ur Rehman
             </h1>
-            <div className="h-12 flex items-center">
-              <span className="text-2xl md:text-3xl text-gradient font-semibold">
+            <div className="h-10 md:h-12 flex items-center">
+              <span className="text-lg md:text-3xl text-gradient font-semibold">
                 {text}
               </span>
               <span
-                className="inline-block w-0.5 h-8 bg-primary ml-1"
+                className="inline-block w-0.5 h-6 md:h-8 bg-primary ml-1"
                 style={{ animation: "typewriter-blink 1s step-end infinite" }}
               />
             </div>
           </div>
 
           {/* CTAs */}
-          <div className="flex flex-wrap gap-5">
+          <div className="flex flex-wrap gap-3 md:gap-5">
             <Button
               asChild
-              className="rounded-full px-10 py-6 text-base bg-primary hover:bg-primary/80 shadow-lg shadow-primary/25 transition-all duration-300 hover:shadow-xl hover:shadow-primary/40 hover:scale-105"
+              className="rounded-full px-6 md:px-10 py-5 md:py-6 text-sm md:text-base bg-primary hover:bg-primary/80 shadow-lg shadow-primary/25 transition-all duration-300 hover:shadow-xl hover:shadow-primary/40 hover:scale-105"
             >
               <a href="#projects">View My Work</a>
             </Button>
             <Button
               asChild
               variant="outline"
-              className="rounded-full px-10 py-6 text-base border-primary/50 hover:bg-primary/10 transition-all duration-300 hover:scale-105 hover:border-primary"
+              className="rounded-full px-6 md:px-10 py-5 md:py-6 text-sm md:text-base border-primary/50 hover:bg-primary/10 transition-all duration-300 hover:scale-105 hover:border-primary"
             >
               <a href="#contact">Contact Me</a>
             </Button>
           </div>
 
           {/* Socials */}
-          <div className="flex gap-5">
-            <a href="https://github.com/touseef7878" target="_blank" rel="noopener noreferrer" className="glass rounded-full p-4 hover:bg-primary/20 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-primary/20">
-              <Github size={22} />
+          <div className="flex gap-3 md:gap-5">
+            <a href="https://github.com/touseef7878" target="_blank" rel="noopener noreferrer" className="glass rounded-full p-3 md:p-4 hover:bg-primary/20 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-primary/20">
+              <Github size={18} className="md:w-[22px] md:h-[22px]" />
             </a>
-            <a href="https://www.linkedin.com/in/touseef-ur-rehman-6b2888372" target="_blank" rel="noopener noreferrer" className="glass rounded-full p-4 hover:bg-primary/20 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-primary/20">
-              <Linkedin size={22} />
+            <a href="https://www.linkedin.com/in/touseef-ur-rehman-6b2888372" target="_blank" rel="noopener noreferrer" className="glass rounded-full p-3 md:p-4 hover:bg-primary/20 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-primary/20">
+              <Linkedin size={18} className="md:w-[22px] md:h-[22px]" />
             </a>
-            <a href="https://wa.me/924476992071" target="_blank" rel="noopener noreferrer" className="glass rounded-full p-4 hover:bg-primary/20 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-primary/20">
-              <MessageCircle size={22} />
+            <a href="https://wa.me/924476992071" target="_blank" rel="noopener noreferrer" className="glass rounded-full p-3 md:p-4 hover:bg-primary/20 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-primary/20">
+              <MessageCircle size={18} className="md:w-[22px] md:h-[22px]" />
             </a>
           </div>
         </div>
