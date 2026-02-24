@@ -80,13 +80,13 @@ const AboutSection = () => {
               {stats.map((s, i) => (
                 <div
                   key={s.label}
-                  className="text-center glass rounded-lg md:rounded-xl p-3 md:p-5 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10 group/stat cursor-default"
+                  className="text-center glass rounded-lg md:rounded-xl p-2 md:p-5 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10 group/stat cursor-default"
                   style={{ animationDelay: `${i * 100}ms` }}
                 >
                   <p className="text-xl md:text-4xl font-bold text-gradient mb-0.5 md:mb-1 group-hover/stat:scale-110 transition-transform duration-300">
                     <AnimatedCounter end={s.value} isVisible={isVisible} />
                   </p>
-                  <p className="text-[10px] md:text-xs text-muted-foreground uppercase tracking-wider leading-tight">
+                  <p className="text-[8px] md:text-xs text-muted-foreground uppercase tracking-tight md:tracking-wider leading-tight break-words">
                     {s.label}
                   </p>
                 </div>
