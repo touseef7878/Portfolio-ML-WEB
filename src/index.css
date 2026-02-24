@@ -1,47 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 230 60% 8%;
-    --foreground: 210 40% 96%;
+    /* Modern Dark Theme */
+    --background: 222 47% 11%;  /* #080C21 */
+    --foreground: 210 40% 96%;  /* #F1F5F9 */
 
-    --card: 230 40% 12%;
+    --card: 222 47% 15%;
     --card-foreground: 210 40% 96%;
 
-    --popover: 230 40% 12%;
+    --popover: 222 47% 15%;
     --popover-foreground: 210 40% 96%;
 
-    --primary: 250 80% 65%;
+    --primary: 189 94% 43%;  /* Cyan #06B6D4 */
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 220 50% 18%;
+    --secondary: 222 47% 18%;
     --secondary-foreground: 210 40% 96%;
 
-    --muted: 220 30% 16%;
-    --muted-foreground: 215 20% 60%;
+    --muted: 222 30% 20%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 200 90% 55%;
+    --accent: 217 91% 60%;  /* Blue #3B82F6 */
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 230 30% 20%;
-    --input: 230 30% 20%;
-    --ring: 250 80% 65%;
+    --border: 222 30% 18%;  /* #242942 */
+    --input: 222 30% 18%;
+    --ring: 189 94% 43%;
 
     --radius: 0.75rem;
 
-    --sidebar-background: 230 60% 8%;
+    --sidebar-background: 222 47% 11%;
     --sidebar-foreground: 210 40% 96%;
-    --sidebar-primary: 250 80% 65%;
+    --sidebar-primary: 189 94% 43%;
     --sidebar-primary-foreground: 210 40% 98%;
-    --sidebar-accent: 220 50% 18%;
+    --sidebar-accent: 222 47% 18%;
     --sidebar-accent-foreground: 210 40% 96%;
-    --sidebar-border: 230 30% 20%;
-    --sidebar-ring: 250 80% 65%;
+    --sidebar-border: 222 30% 18%;
+    --sidebar-ring: 189 94% 43%;
   }
 }
 
@@ -52,6 +55,11 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
   }
 
   html {
@@ -70,7 +78,7 @@
 
   .glow-border {
     @apply border border-white/10;
-    box-shadow: 0 0 15px hsl(250 80% 65% / 0.15), inset 0 0 15px hsl(250 80% 65% / 0.05);
+    box-shadow: 0 0 15px hsl(189 94% 43% / 0.15), inset 0 0 15px hsl(189 94% 43% / 0.05);
   }
 
   .text-gradient {
