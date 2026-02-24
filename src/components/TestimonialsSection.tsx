@@ -4,19 +4,16 @@ import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 
 const testimonials = [
   {
-    name: "Ahmed Khan",
-    role: "Project Collaborator",
-    text: "Touseef delivered an exceptional AI quiz application. His attention to detail and clean code practices made the project a huge success.",
+    name: "Qasim Shahzad",
+    role: "Manager at RedFORT360",
+    text: "He showed excellent attention to detail and quickly integrated into our front-end workflow. His work greatly improved the UI consistency, responsiveness, and overall user engagement.",
+    image: "/qasim-shahzad.jpg.jpeg",
   },
   {
-    name: "Sarah Ali",
-    role: "Client",
-    text: "Working with Touseef on the e-commerce project was a great experience. He built a modern, responsive app that exceeded expectations.",
-  },
-  {
-    name: "Omar Farooq",
-    role: "Team Lead",
-    text: "Touseef's ML expertise is impressive. His loan prediction model was accurate and well-documented. Highly recommended!",
+    name: "Abdul Rehman Radwan",
+    role: "CEO at Elevvo Pathways",
+    text: "He demonstrated strong problem-solving skills and quickly adapted to our ML workflow. His contribution to the data preprocessing pipeline significantly improved model performance.",
+    image: null,
   },
 ];
 
@@ -42,14 +39,25 @@ const TestimonialsSection = () => {
 
         <div className="max-w-2xl mx-auto glass rounded-2xl p-8 md:p-12 text-center relative">
           <Quote className="text-primary/30 mx-auto mb-6" size={40} />
-          <p className="text-muted-foreground leading-relaxed mb-6 italic">
+          <p className="text-muted-foreground leading-relaxed mb-6 italic text-base">
             "{t.text}"
           </p>
-          <div className="w-12 h-12 rounded-full bg-primary/20 mx-auto mb-3 flex items-center justify-center text-primary font-bold">
-            {t.name[0]}
-          </div>
-          <p className="font-semibold">{t.name}</p>
-          <p className="text-xs text-muted-foreground">{t.role}</p>
+          
+          {/* Avatar */}
+          {t.image ? (
+            <img 
+              src={t.image} 
+              alt={t.name}
+              className="w-16 h-16 rounded-full mx-auto mb-3 object-cover border-2 border-primary/30"
+            />
+          ) : (
+            <div className="w-16 h-16 rounded-full bg-primary/20 mx-auto mb-3 flex items-center justify-center text-primary font-bold text-xl">
+              {t.name.split(' ').map(n => n[0]).join('')}
+            </div>
+          )}
+          
+          <p className="font-semibold text-lg">{t.name}</p>
+          <p className="text-sm text-muted-foreground">{t.role}</p>
 
           <div className="flex justify-center gap-4 mt-8">
             <button onClick={prev} className="glass rounded-full p-2 hover:bg-primary/20 transition-colors">

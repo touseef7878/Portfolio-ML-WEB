@@ -70,7 +70,7 @@ const ContactSection = () => {
             <a href="mailto:touseefurrehman5554@gmail.com" className="glass rounded-full p-3 hover:bg-primary/20 transition-colors">
               <Mail size={18} />
             </a>
-            <a href="https://wa.me/924476992071" target="_blank" rel="noopener noreferrer" className="glass rounded-full p-3 hover:bg-primary/20 transition-colors">
+            <a href="https://wa.me/923476992071" target="_blank" rel="noopener noreferrer" className="glass rounded-full p-3 hover:bg-primary/20 transition-colors">
               <MessageCircle size={18} />
             </a>
           </div>

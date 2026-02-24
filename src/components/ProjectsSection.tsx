@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useScrollAnimation } from "./useScrollAnimation";
+import TiltCard from "./TiltCard";
 import { Github, ExternalLink } from "lucide-react";
 import projectQuiz from "@/assets/project-quiz.png";
 import projectLibrary from "@/assets/project-library.png";
@@ -105,17 +106,23 @@ const ProjectsSection = () => {
 
         {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {filtered.map((project) => (
-            <div
+          {filtered.map((project, index) => (
+            <TiltCard
               key={project.title}
-              className="glass rounded-2xl overflow-hidden group hover:glow-border transition-all duration-300 flex flex-col"
+              className={`glass rounded-2xl overflow-hidden group hover:glow-border flex flex-col ${
+                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
+              style={{ 
+                transitionDelay: isVisible ? `${index * 80}ms` : '0ms',
+                transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
+              }}
             >
-              <div className="h-48 overflow-hidden">
+              <div className="h-44 overflow-hidden bg-muted/20">
                 <img
                    src={project.image}
                    alt={project.title}
                    loading="lazy"
-                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                  />
               </div>
               <div className="p-6 flex flex-col flex-1">
@@ -152,7 +159,7 @@ const ProjectsSection = () => {
                   </a>
                 </div>
               </div>
-            </div>
+            </TiltCard>
           ))}
         </div>
       </div>

@@ -88,11 +88,92 @@
   .animate-float-slow {
     animation: float 10s ease-in-out 4s infinite;
   }
+  .animate-spin-slow {
+    animation: spin 8s linear infinite;
+  }
+  .animate-shine {
+    animation: shine 1.5s ease-in-out;
+  }
+  .animate-bounce-subtle {
+    animation: bounce-subtle 2s ease-in-out infinite;
+  }
+  .animate-pulse-slow {
+    animation: pulse-slow 3s ease-in-out infinite;
+  }
+  .animate-gradient-rotate {
+    animation: gradient-rotate 3s linear infinite;
+  }
+  .animate-float-particle-1 {
+    animation: float-particle 8s ease-in-out infinite;
+  }
+  .animate-float-particle-2 {
+    animation: float-particle 10s ease-in-out 1s infinite;
+  }
+  .animate-float-particle-3 {
+    animation: float-particle 12s ease-in-out 2s infinite;
+  }
+  .animate-float-particle-4 {
+    animation: float-particle 9s ease-in-out 3s infinite;
+  }
+  
+  /* 3D Transform utilities */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .transform-style-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
 }
 
 @keyframes float {
   0%, 100% { transform: translateY(0px) scale(1); }
   50% { transform: translateY(-20px) scale(1.05); }
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(30deg); }
+  100% { transform: translateX(100%) translateY(100%) rotate(30deg); }
+}
+
+@keyframes bounce-subtle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+@keyframes gradient-rotate {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes float-particle {
+  0%, 100% { 
+    transform: translate(0, 0) scale(1);
+    opacity: 0.3;
+  }
+  25% { 
+    transform: translate(20px, -30px) scale(1.2);
+    opacity: 0.6;
+  }
+  50% { 
+    transform: translate(-15px, -50px) scale(0.8);
+    opacity: 0.4;
+  }
+  75% { 
+    transform: translate(30px, -20px) scale(1.1);
+    opacity: 0.5;
+  }
 }
 
 @keyframes typewriter-blink {
