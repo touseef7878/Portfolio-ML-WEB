@@ -2,13 +2,13 @@ import { useState } from "react";
 import { useScrollAnimation } from "./useScrollAnimation";
 import TiltCard from "./TiltCard";
 import { Github, ExternalLink } from "lucide-react";
-import projectQuiz from "@/assets/project-quiz.png";
-import projectLibrary from "@/assets/project-library.png";
-import projectSentiment from "@/assets/project-sentiment.png";
-import projectLoan from "@/assets/project-loan.png";
-import projectScores from "@/assets/project-scores.png";
-import projectEcommerce from "@/assets/project-ecommerce.png";
-import projectChat from "@/assets/project-chat.png";
+import projectQuiz from "@/assets/project-quiz.webp";
+import projectLibrary from "@/assets/project-library.webp";
+import projectSentiment from "@/assets/project-sentiment.webp";
+import projectLoan from "@/assets/project-loan.webp";
+import projectScores from "@/assets/project-scores.webp";
+import projectEcommerce from "@/assets/project-ecommerce.webp";
+import projectChat from "@/assets/project-chat.webp";
 
 type Category = "all" | "web" | "aiml";
 
@@ -123,21 +123,21 @@ const ProjectsSection = () => {
           {filtered.map((project, index) => (
             <TiltCard
               key={project.title}
-              className={`glass rounded-2xl overflow-hidden group hover:glow-border flex flex-col ${
+              className={`glass rounded-2xl overflow-hidden group hover:glow-border flex flex-col transition-all duration-700 ${
                 isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
               style={{ 
                 transitionDelay: isVisible ? `${index * 80}ms` : '0ms',
-                transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
               }}
             >
               <div className="h-44 overflow-hidden bg-muted/20">
                 <img
-                   src={project.image}
-                   alt={project.title}
-                   loading="lazy"
-                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                 />
+                  src={project.image}
+                  alt={project.title}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                />
               </div>
               <div className="p-6 flex flex-col flex-1">
                 <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">
@@ -162,7 +162,7 @@ const ProjectsSection = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="glass rounded-full p-2 hover:bg-primary/20 transition-colors"
-                    aria-label="GitHub"
+                    aria-label={`${project.title} GitHub`}
                   >
                     <Github size={16} />
                   </a>
@@ -172,7 +172,7 @@ const ProjectsSection = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="glass rounded-full p-2 hover:bg-primary/20 transition-colors"
-                      aria-label="Live demo"
+                      aria-label={`${project.title} live demo`}
                     >
                       <ExternalLink size={16} />
                     </a>

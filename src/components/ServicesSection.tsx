@@ -63,22 +63,18 @@ const ServicesSection = () => {
                 transitionDelay: isVisible ? `${index * 200}ms` : '0ms',
               }}
             >
-              {/* Icon */}
               <div className={`w-16 h-16 rounded-2xl ${service.iconBg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
                 <service.icon className={service.color} size={32} strokeWidth={2} />
               </div>
 
-              {/* Title */}
               <h3 className="text-2xl font-bold mb-4 group-hover:text-gradient transition-all duration-300">
                 {service.title}
               </h3>
 
-              {/* Description */}
               <p className="text-muted-foreground text-sm leading-relaxed mb-6">
                 {service.desc}
               </p>
 
-              {/* Expanded Details */}
               <div 
                 className={`overflow-hidden transition-all duration-500 ${
                   expandedIndex === index ? 'max-h-96 mb-6' : 'max-h-0'
@@ -103,7 +99,6 @@ const ServicesSection = () => {
                 </div>
               </div>
 
-              {/* CTA Button */}
               <Button
                 variant="ghost"
                 size="sm"

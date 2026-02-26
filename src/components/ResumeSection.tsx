@@ -38,6 +38,111 @@ const resumes = [
   },
 ];
 
+const ResumeCard = ({ resume, index, showPreview, onPreviewChange }: {
+  resume: typeof resumes[0];
+  index: number;
+  showPreview: boolean;
+  onPreviewChange: (show: boolean) => void;
+}) => {
+  return (
+    <div
+      className="relative group"
+      style={{
+        transitionDelay: `${index * 150}ms`,
+      }}
+    >
+      <div className="relative glass rounded-3xl overflow-hidden hover:glow-border transition-all duration-300">
+        <div className="relative z-10 p-8">
+          <div className="flex justify-center mb-6">
+            <div className={`relative w-20 h-20 rounded-2xl bg-gradient-to-br ${resume.color} flex items-center justify-center`}>
+              <FileText className={`${resume.iconColor}`} size={36} />
+            </div>
+          </div>
+
+          <div className="text-center mb-6">
+            <h3 className="font-bold text-xl mb-1">
+              {resume.title}
+            </h3>
+            <p className="text-sm text-primary/80 font-medium mb-3">{resume.subtitle}</p>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              {resume.description}
+            </p>
+          </div>
+
+          <div className="h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent mb-6" />
+
+          <div className="flex gap-3 justify-center">
+            <div 
+              className="relative"
+              onMouseEnter={() => onPreviewChange(true)}
+              onMouseLeave={() => onPreviewChange(false)}
+            >
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="rounded-full border-primary/50 hover:bg-primary/10 transition-all duration-300"
+              >
+                <Eye size={16} className="mr-2" /> Preview
+              </Button>
+
+              <div 
+                className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-3 transition-all duration-300 pointer-events-none z-50 ${
+                  showPreview ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+                }`}
+              >
+                <div className="relative">
+                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-black" />
+                  
+                  <div className={`bg-black rounded-xl p-3 w-52 shadow-2xl border-2 ${
+                    index === 0 ? 'border-cyan-500/50' : 'border-pink-500/50'
+                  }`}>
+                    <div className="flex items-center gap-2 mb-2 pb-2 border-b border-white/20">
+                      <FileText className={resume.iconColor} size={14} />
+                      <span className="text-[10px] font-semibold text-white">Resume Preview</span>
+                    </div>
+                    
+                    <div className="space-y-1 font-mono text-[9px] leading-relaxed">
+                      {resume.previewText.map((line, i) => (
+                        <div 
+                          key={i}
+                          className={`${
+                            i === 0 ? 'font-bold text-[10px] text-gradient' : 
+                            i === 1 ? 'text-primary/90 font-semibold text-[9px]' : 
+                            'text-gray-300'
+                          } transition-all duration-300`}
+                          style={{
+                            transitionDelay: `${i * 50}ms`,
+                            opacity: showPreview ? 1 : 0,
+                            transform: showPreview ? 'translateX(0)' : 'translateX(-10px)'
+                          }}
+                        >
+                          {line}
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className={`absolute top-0 right-0 w-12 h-12 bg-gradient-to-br ${resume.color} rounded-tr-xl rounded-bl-full opacity-20`} />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <Button 
+              asChild
+              size="sm" 
+              className="rounded-full bg-primary hover:bg-primary/80 shadow-lg shadow-primary/25 transition-all duration-300"
+            >
+              <a href={resume.file} target="_blank" rel="noopener noreferrer">
+                <ExternalLink size={16} className="mr-2" /> View
+              </a>
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ResumeSection = () => {
   const { ref, isVisible } = useScrollAnimation();
   const [showPreview, setShowPreview] = useState<number | null>(null);
@@ -59,115 +164,13 @@ const ResumeSection = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {resumes.map((resume, index) => (
-            <div
+            <ResumeCard
               key={resume.title}
-              className="relative group"
-              style={{
-                transitionDelay: `${index * 150}ms`,
-              }}
-            >
-              {/* Main card */}
-              <div className="relative glass rounded-3xl overflow-hidden hover:glow-border transition-all duration-300">
-                {/* Content */}
-                <div className="relative z-10 p-8">
-                  {/* Icon */}
-                  <div className="flex justify-center mb-6">
-                    <div className={`relative w-20 h-20 rounded-2xl bg-gradient-to-br ${resume.color} flex items-center justify-center`}>
-                      <FileText className={`${resume.iconColor}`} size={36} />
-                    </div>
-                  </div>
-
-                  {/* Text content */}
-                  <div className="text-center mb-6">
-                    <h3 className="font-bold text-xl mb-1">
-                      {resume.title}
-                    </h3>
-                    <p className="text-sm text-primary/80 font-medium mb-3">{resume.subtitle}</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      {resume.description}
-                    </p>
-                  </div>
-
-                  {/* Divider */}
-                  <div className="h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent mb-6" />
-
-                  {/* Buttons */}
-                  <div className="flex gap-3 justify-center">
-                    {/* Preview Button with Tooltip */}
-                    <div 
-                      className="relative"
-                      onMouseEnter={() => setShowPreview(index)}
-                      onMouseLeave={() => setShowPreview(null)}
-                    >
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="rounded-full border-primary/50 hover:bg-primary/10 transition-all duration-300"
-                      >
-                        <Eye size={16} className="mr-2" /> Preview
-                      </Button>
-
-                      {/* Resume Preview Tooltip */}
-                      <div 
-                        className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-3 transition-all duration-300 pointer-events-none z-50 ${
-                          showPreview === index ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
-                        }`}
-                      >
-                        <div className="relative">
-                          {/* Arrow */}
-                          <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-black" />
-                          
-                          {/* Preview Card */}
-                          <div className={`bg-black rounded-xl p-3 w-52 shadow-2xl border-2 ${
-                            index === 0 ? 'border-cyan-500/50' : 'border-pink-500/50'
-                          }`}>
-                            {/* Mini document header */}
-                            <div className="flex items-center gap-2 mb-2 pb-2 border-b border-white/20">
-                              <FileText className={resume.iconColor} size={14} />
-                              <span className="text-[10px] font-semibold text-white">Resume Preview</span>
-                            </div>
-                            
-                            {/* Preview content */}
-                            <div className="space-y-1 font-mono text-[9px] leading-relaxed">
-                              {resume.previewText.map((line, i) => (
-                                <div 
-                                  key={i}
-                                  className={`${
-                                    i === 0 ? 'font-bold text-[10px] text-gradient' : 
-                                    i === 1 ? 'text-primary/90 font-semibold text-[9px]' : 
-                                    'text-gray-300'
-                                  } transition-all duration-300`}
-                                  style={{
-                                    transitionDelay: `${i * 50}ms`,
-                                    opacity: showPreview === index ? 1 : 0,
-                                    transform: showPreview === index ? 'translateX(0)' : 'translateX(-10px)'
-                                  }}
-                                >
-                                  {line}
-                                </div>
-                              ))}
-                            </div>
-
-                            {/* Decorative corner */}
-                            <div className={`absolute top-0 right-0 w-12 h-12 bg-gradient-to-br ${resume.color} rounded-tr-xl rounded-bl-full opacity-20`} />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <Button 
-                      asChild
-                      size="sm" 
-                      className="rounded-full bg-primary hover:bg-primary/80 shadow-lg shadow-primary/25 transition-all duration-300"
-                    >
-                      <a href={resume.file} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink size={16} className="mr-2" /> View
-                      </a>
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
+              resume={resume}
+              index={index}
+              showPreview={showPreview === index}
+              onPreviewChange={(show) => setShowPreview(show ? index : null)}
+            />
           ))}
         </div>
       </div>

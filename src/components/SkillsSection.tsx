@@ -1,9 +1,9 @@
 import { useScrollAnimation } from "./useScrollAnimation";
 import { useState } from "react";
-import iconLanguages from "@/assets/icon-languages.png";
-import iconAiml from "@/assets/icon-aiml.png";
-import iconWeb from "@/assets/icon-web.png";
-import iconTools from "@/assets/icon-tools.png";
+import iconLanguages from "@/assets/icon-languages.webp";
+import iconAiml from "@/assets/icon-aiml.webp";
+import iconWeb from "@/assets/icon-web.webp";
+import iconTools from "@/assets/icon-tools.webp";
 
 const categories = [
   {
@@ -64,8 +64,14 @@ const SkillsSection = () => {
               >
                 {/* Front of card */}
                 <div className="absolute inset-0 glass rounded-2xl p-6 backface-hidden hover:glow-border transition-all duration-300">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform overflow-hidden animate-bounce-subtle">
-                    <img src={cat.image} alt={cat.title} loading="lazy" className="w-8 h-8 object-contain" />
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform overflow-hidden">
+                    <img 
+                      src={cat.image} 
+                      alt={cat.title} 
+                      loading="lazy" 
+                      decoding="async"
+                      className="w-8 h-8 object-contain" 
+                    />
                   </div>
                   <h3 className="font-semibold text-lg mb-4">{cat.title}</h3>
                   <div className="flex flex-wrap gap-2">
@@ -82,8 +88,14 @@ const SkillsSection = () => {
 
                 {/* Back of card */}
                 <div className="absolute inset-0 glass-strong rounded-2xl p-6 backface-hidden rotate-y-180 flex flex-col justify-center items-center text-center">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-4 animate-pulse-slow">
-                    <img src={cat.image} alt={cat.title} loading="lazy" className="w-10 h-10 object-contain" />
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-4">
+                    <img 
+                      src={cat.image} 
+                      alt={cat.title} 
+                      loading="lazy" 
+                      decoding="async"
+                      className="w-10 h-10 object-contain" 
+                    />
                   </div>
                   <h3 className="font-bold text-xl mb-3 text-gradient">{cat.title}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">

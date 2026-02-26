@@ -43,11 +43,14 @@ const TestimonialsSection = () => {
             "{t.text}"
           </p>
           
-          {/* Avatar */}
           {t.image ? (
             <img 
               src={t.image} 
               alt={t.name}
+              loading="lazy"
+              decoding="async"
+              width="64"
+              height="64"
               className="w-16 h-16 rounded-full mx-auto mb-3 object-cover border-2 border-primary/30"
             />
           ) : (
@@ -60,10 +63,18 @@ const TestimonialsSection = () => {
           <p className="text-sm text-muted-foreground">{t.role}</p>
 
           <div className="flex justify-center gap-4 mt-8">
-            <button onClick={prev} className="glass rounded-full p-2 hover:bg-primary/20 transition-colors">
+            <button 
+              onClick={prev} 
+              className="glass rounded-full p-2 hover:bg-primary/20 transition-colors"
+              aria-label="Previous testimonial"
+            >
               <ChevronLeft size={20} />
             </button>
-            <button onClick={next} className="glass rounded-full p-2 hover:bg-primary/20 transition-colors">
+            <button 
+              onClick={next} 
+              className="glass rounded-full p-2 hover:bg-primary/20 transition-colors"
+              aria-label="Next testimonial"
+            >
               <ChevronRight size={20} />
             </button>
           </div>

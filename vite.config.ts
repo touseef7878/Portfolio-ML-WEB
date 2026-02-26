@@ -17,4 +17,22 @@ export default defineConfig(() => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+        passes: 2,
+      },
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: undefined, // Let Vite handle automatic chunking
+      },
+    },
+    // Performance budget warnings
+    chunkSizeWarningLimit: 500,
+    reportCompressedSize: true,
+  },
 }));

@@ -23,8 +23,6 @@ const ContactSection = () => {
     setIsSubmitting(true);
 
     try {
-      // Using Web3Forms - Free email service
-      // Get your access key from https://web3forms.com/
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
@@ -32,7 +30,7 @@ const ContactSection = () => {
           Accept: "application/json",
         },
         body: JSON.stringify({
-          access_key: "084c5ccf-c73b-4194-b768-1be696b13e28", // Replace with your Web3Forms access key
+          access_key: "084c5ccf-c73b-4194-b768-1be696b13e28",
           name: form.name,
           email: form.email,
           message: form.message,
@@ -110,16 +108,16 @@ const ContactSection = () => {
           </form>
 
           <div className="flex justify-center gap-4 mt-8">
-            <a href="https://github.com/touseef7878" target="_blank" rel="noopener noreferrer" className="glass rounded-full p-3 hover:bg-primary/20 transition-colors">
+            <a href="https://github.com/touseef7878" target="_blank" rel="noopener noreferrer" className="glass rounded-full p-3 hover:bg-primary/20 transition-colors" aria-label="GitHub">
               <Github size={18} />
             </a>
-            <a href="https://www.linkedin.com/in/touseef-ur-rehman-6b2888372" target="_blank" rel="noopener noreferrer" className="glass rounded-full p-3 hover:bg-primary/20 transition-colors">
+            <a href="https://www.linkedin.com/in/touseef-ur-rehman-6b2888372" target="_blank" rel="noopener noreferrer" className="glass rounded-full p-3 hover:bg-primary/20 transition-colors" aria-label="LinkedIn">
               <Linkedin size={18} />
             </a>
-            <a href="mailto:touseefurrehman5554@gmail.com" className="glass rounded-full p-3 hover:bg-primary/20 transition-colors">
+            <a href="mailto:touseefurrehman5554@gmail.com" className="glass rounded-full p-3 hover:bg-primary/20 transition-colors" aria-label="Email">
               <Mail size={18} />
             </a>
-            <a href="https://wa.me/923476992071" target="_blank" rel="noopener noreferrer" className="glass rounded-full p-3 hover:bg-primary/20 transition-colors">
+            <a href="https://wa.me/923476992071" target="_blank" rel="noopener noreferrer" className="glass rounded-full p-3 hover:bg-primary/20 transition-colors" aria-label="WhatsApp">
               <MessageCircle size={18} />
             </a>
           </div>
