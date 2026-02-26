@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Github, Linkedin, ArrowDown, MessageCircle, Play } from "lucide-react";
+import { Github, Linkedin, ArrowDown, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const roles = ["Python Developer", "ML / AI Engineer", "Web Developer"];
@@ -8,13 +8,6 @@ const HeroSection = () => {
   const [roleIndex, setRoleIndex] = useState(0);
   const [text, setText] = useState("");
   const [deleting, setDeleting] = useState(false);
-  const [videoEnabled, setVideoEnabled] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    // Detect mobile on mount
-    setIsMobile(window.innerWidth < 768);
-  }, []);
 
   useEffect(() => {
     const current = roles[roleIndex];
@@ -39,34 +32,16 @@ const HeroSection = () => {
       id="hero"
       className="relative min-h-screen flex items-center overflow-hidden"
     >
-      {/* Animated gradient background - NO VIDEO ON MOBILE */}
-      {!isMobile && videoEnabled ? (
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src="/hero-video-compressed.mp4" type="video/mp4" />
-        </video>
-      ) : (
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-background/95">
-          {/* Lightweight animated gradient orbs */}
-          <div 
-            className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-20 animate-float"
-            style={{ 
-              background: 'radial-gradient(circle, rgba(6, 182, 212, 0.3) 0%, transparent 70%)',
-            }}
-          />
-          <div 
-            className="absolute top-1/2 right-1/4 w-80 h-80 rounded-full opacity-15 animate-float-delayed"
-            style={{ 
-              background: 'radial-gradient(circle, rgba(59, 130, 246, 0.25) 0%, transparent 70%)',
-            }}
-          />
-        </div>
-      )}
+      {/* Background video - plays on all devices */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source src="/hero-video-compressed.mp4" type="video/mp4" />
+      </video>
 
       {/* Gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/30" />
@@ -106,18 +81,6 @@ const HeroSection = () => {
               <a href="#contact">Contact Me</a>
             </Button>
           </div>
-
-          {/* Enable Motion Button - Desktop Only */}
-          {!isMobile && !videoEnabled && (
-            <Button
-              onClick={() => setVideoEnabled(true)}
-              variant="ghost"
-              size="sm"
-              className="self-start text-muted-foreground hover:text-foreground"
-            >
-              <Play size={16} className="mr-2" /> Enable Background Video
-            </Button>
-          )}
 
           {/* Socials */}
           <div className="flex gap-3 md:gap-5">
