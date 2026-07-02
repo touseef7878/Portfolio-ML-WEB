@@ -1,17 +1,21 @@
-import { useState } from "react";
-import { useScrollAnimation } from "./useScrollAnimation";
-import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "@/lib/scrollManager";
+import { Quote, ChevronLeft, ChevronRight } from "lucide-react";
 
 const testimonials = [
   {
     name: "Qasim Shahzad",
     role: "Manager at RedFORT360",
+    initials: "QS",
+    color: "#3B82F6",
     text: "He showed excellent attention to detail and quickly integrated into our front-end workflow. His work greatly improved the UI consistency, responsiveness, and overall user engagement.",
     image: "/qasim-shahzad.jpg.jpeg",
   },
   {
     name: "Abdul Rehman Radwan",
     role: "CEO at Elevvo Pathways",
+    initials: "AR",
+    color: "#A855F7",
     text: "He demonstrated strong problem-solving skills and quickly adapted to our ML workflow. His contribution to the data preprocessing pipeline significantly improved model performance.",
     image: null,
   },
@@ -19,66 +23,121 @@ const testimonials = [
 
 const TestimonialsSection = () => {
   const [current, setCurrent] = useState(0);
-  const { ref, isVisible } = useScrollAnimation();
+  const sectionRef            = useRef<HTMLElement>(null);
+  const cardRef               = useRef<HTMLDivElement>(null);
 
-  const prev = () => setCurrent((c) => (c - 1 + testimonials.length) % testimonials.length);
-  const next = () => setCurrent((c) => (c + 1) % testimonials.length);
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(".testimonials-heading",
+        { opacity: 0, y: 50 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out",
+          scrollTrigger: { trigger: ".testimonials-heading", start: "top 88%", once: true } }
+      );
+      gsap.fromTo(".testimonial-card",
+        { opacity: 0, y: 60 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out",
+          scrollTrigger: { trigger: ".testimonial-card", start: "top 85%", once: true } }
+      );
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
+  const navigate = (dir: 1 | -1) => {
+    if (!cardRef.current) return;
+    gsap.to(cardRef.current, {
+      opacity: 0, x: -30 * dir, duration: 0.22, ease: "power2.in",
+      onComplete: () => {
+        setCurrent((c) => (c + dir + testimonials.length) % testimonials.length);
+        gsap.fromTo(cardRef.current,
+          { opacity: 0, x: 30 * dir },
+          { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }
+        );
+      },
+    });
+  };
+
   const t = testimonials[current];
 
   return (
-    <section className="py-24 relative">
-      <div
-        ref={ref}
-        className={`container mx-auto px-4 transition-all duration-700 ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-        }`}
-      >
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">
-          <span className="text-gradient">Testimonials</span>
-        </h2>
+    <section id="testimonials" ref={sectionRef} className="py-28 md:py-36">
+      <div className="container mx-auto px-6 max-w-6xl">
 
-        <div className="max-w-2xl mx-auto glass rounded-2xl p-8 md:p-12 text-center relative">
-          <Quote className="text-primary/30 mx-auto mb-6" size={40} />
-          <p className="text-muted-foreground leading-relaxed mb-6 italic text-base">
-            "{t.text}"
-          </p>
-          
-          {t.image ? (
-            <img 
-              src={t.image} 
-              alt={t.name}
-              loading="lazy"
-              decoding="async"
-              width="64"
-              height="64"
-              className="w-16 h-16 rounded-full mx-auto mb-3 object-cover border-2 border-primary/30"
-            />
-          ) : (
-            <div className="w-16 h-16 rounded-full bg-primary/20 mx-auto mb-3 flex items-center justify-center text-primary font-bold text-xl">
-              {t.name.split(' ').map(n => n[0]).join('')}
+        <div className="testimonials-heading text-center mb-16 will-change-transform">
+          <span className="section-label mb-5 inline-flex">Testimonials</span>
+          <h2 className="text-4xl md:text-5xl font-bold mt-4">
+            What People <span className="text-gradient">Say</span>
+          </h2>
+        </div>
+
+        <div className="testimonial-card max-w-2xl mx-auto will-change-transform">
+          <div
+            ref={cardRef}
+            className="bg-card border border-white/8 rounded-2xl p-10 md:p-14"
+            style={{ borderTop: `2px solid ${t.color}40` }}
+          >
+            <Quote size={32} className="mb-6 opacity-20" style={{ color: t.color }} />
+
+            <p className="text-base md:text-lg text-foreground/80 leading-[1.85] italic mb-8">
+              "{t.text}"
+            </p>
+
+            <div className="flex items-center justify-between flex-wrap gap-4">
+              <div className="flex items-center gap-4">
+                {t.image ? (
+                  <img
+                    src={t.image} alt={t.name}
+                    loading="lazy" decoding="async"
+                    className="w-12 h-12 rounded-full object-cover border-2"
+                    style={{ borderColor: `${t.color}40` }}
+                  />
+                ) : (
+                  <div
+                    className="w-12 h-12 rounded-full flex items-center justify-center font-bold text-sm"
+                    style={{ background: `${t.color}15`, border: `2px solid ${t.color}30`, color: t.color }}
+                  >
+                    {t.initials}
+                  </div>
+                )}
+                <div>
+                  <p className="font-semibold text-sm">{t.name}</p>
+                  <p className="text-xs text-muted-foreground">{t.role}</p>
+                </div>
+              </div>
+
+              {/* Navigation */}
+              <div className="flex items-center gap-3">
+                {/* Dots */}
+                <div className="flex gap-1.5 mr-1">
+                  {testimonials.map((_, i) => (
+                    <div
+                      key={i}
+                      className="h-1.5 rounded-full transition-all duration-300"
+                      style={{
+                        width: i === current ? "20px" : "6px",
+                        background: i === current ? t.color : "rgba(255,255,255,0.15)",
+                      }}
+                    />
+                  ))}
+                </div>
+                <button
+                  onClick={() => navigate(-1)}
+                  className="w-8 h-8 rounded-full border border-white/12 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-white/24 transition-all"
+                  aria-label="Previous"
+                >
+                  <ChevronLeft size={14} />
+                </button>
+                <button
+                  onClick={() => navigate(1)}
+                  className="w-8 h-8 rounded-full border border-white/12 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-white/24 transition-all"
+                  aria-label="Next"
+                >
+                  <ChevronRight size={14} />
+                </button>
+              </div>
             </div>
-          )}
-          
-          <p className="font-semibold text-lg">{t.name}</p>
-          <p className="text-sm text-muted-foreground">{t.role}</p>
-
-          <div className="flex justify-center gap-4 mt-8">
-            <button 
-              onClick={prev} 
-              className="glass rounded-full p-2 hover:bg-primary/20 transition-colors"
-              aria-label="Previous testimonial"
-            >
-              <ChevronLeft size={20} />
-            </button>
-            <button 
-              onClick={next} 
-              className="glass rounded-full p-2 hover:bg-primary/20 transition-colors"
-              aria-label="Next testimonial"
-            >
-              <ChevronRight size={20} />
-            </button>
           </div>
         </div>
+
       </div>
     </section>
   );

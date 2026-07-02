@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ThemeProvider } from "next-themes";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Loader from "./components/Loader";
@@ -15,13 +16,10 @@ const App = () => {
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    // Minimum loading time of 2 seconds for smooth experience
     const timer = setTimeout(() => {
       setLoading(false);
-      // Small delay before showing content for smooth transition
-      setTimeout(() => setShowContent(true), 100);
-    }, 2000);
-
+      setTimeout(() => setShowContent(true), 80);
+    }, 1800);
     return () => clearTimeout(timer);
   }, []);
 
@@ -30,20 +28,22 @@ const App = () => {
   }
 
   return (
-    <div className={showContent ? 'fade-in' : 'opacity-0'}>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </QueryClientProvider>
-    </div>
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+      <div className={showContent ? "fade-in" : "opacity-0"}>
+        <QueryClientProvider client={queryClient}>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </QueryClientProvider>
+      </div>
+    </ThemeProvider>
   );
 };
 

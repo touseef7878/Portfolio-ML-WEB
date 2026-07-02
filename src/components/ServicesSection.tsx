@@ -1,128 +1,119 @@
-import { useScrollAnimation } from "./useScrollAnimation";
-import { useState } from "react";
-import { Globe, Brain, ArrowRight, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "@/lib/scrollManager";
+import { Globe, Brain, ChevronDown } from "lucide-react";
 
 const services = [
   {
     icon: Globe,
     title: "Web Development",
-    desc: "Modern, responsive, high-performance websites using React and modern tools.",
-    color: "text-cyan-400",
-    iconBg: "bg-cyan-500/10",
+    tagline: "From idea to deployed product",
+    desc: "Modern, performant full-stack applications built with React, TypeScript, and Flask.",
+    accentColor: "#3B82F6",
     details: [
-      "Full-stack web applications with React, TypeScript, and Flask",
-      "Responsive design with Tailwind CSS and modern UI frameworks",
-      "RESTful API development and integration",
-      "Database design and optimization with SQLite",
-      "Clean, maintainable, and production-ready code",
-      "Performance optimization and SEO best practices",
+      "Full-stack apps — React, TypeScript, Flask",
+      "Responsive UI with Tailwind CSS & shadcn/ui",
+      "RESTful API design and integration",
+      "SQLite database modeling",
+      "Performance optimisation & SEO",
     ],
   },
   {
     icon: Brain,
-    title: "Machine Learning Solutions",
-    desc: "Predictive models, data analysis, and AI-powered applications.",
-    color: "text-pink-400",
-    iconBg: "bg-pink-500/10",
+    title: "AI / ML Engineering",
+    tagline: "Data-driven intelligent systems",
+    desc: "Predictive models, NLP pipelines, and AI-powered tools built in Python.",
+    accentColor: "#A855F7",
     details: [
-      "Predictive modeling with Scikit-learn and Python",
-      "Natural Language Processing (NLP) with NLTK",
-      "Sentiment analysis and text classification",
-      "Linear regression and classification models",
-      "Data preprocessing and feature engineering",
-      "Model evaluation and performance optimization",
+      "Predictive modeling — Scikit-learn & Python",
+      "NLP & sentiment analysis with NLTK",
+      "Regression and classification pipelines",
+      "Data preprocessing & feature engineering",
+      "Model evaluation & performance tuning",
     ],
   },
 ];
 
 const ServicesSection = () => {
-  const { ref, isVisible } = useScrollAnimation();
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const [expanded, setExpanded] = useState<number | null>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(".services-heading",
+        { opacity: 0, y: 50 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out",
+          scrollTrigger: { trigger: ".services-heading", start: "top 88%", once: true } }
+      );
+      gsap.fromTo(".service-card",
+        { opacity: 0, y: 70 },
+        { opacity: 1, y: 0, duration: 0.75, ease: "power3.out", stagger: 0.18,
+          scrollTrigger: { trigger: ".service-card", start: "top 85%", once: true } }
+      );
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section id="services" className="py-24 relative">
-      <div
-        ref={ref}
-        className={`container mx-auto px-4 transition-all duration-700 ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-        }`}
-      >
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">
-          My <span className="text-gradient">Services</span>
-        </h2>
+    <section id="services" ref={sectionRef} className="py-28 md:py-36">
+      <div className="container mx-auto px-6 max-w-6xl">
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {services.map((service, index) => (
+        <div className="services-heading text-center mb-20 will-change-transform">
+          <span className="section-label mb-5 inline-flex">Services</span>
+          <h2 className="text-4xl md:text-5xl font-bold mt-4">
+            What I <span className="text-gradient">Offer</span>
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          {services.map((s, i) => (
             <div
-              key={service.title}
-              className={`glass rounded-3xl p-8 hover:glow-border transition-all duration-700 group ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-              }`}
-              style={{
-                transitionDelay: isVisible ? `${index * 200}ms` : '0ms',
-              }}
+              key={s.title}
+              className="service-card bg-card border border-white/8 rounded-2xl p-8 hover:border-white/16 transition-all duration-300 shadow-sm will-change-transform"
             >
-              <div className={`w-16 h-16 rounded-2xl ${service.iconBg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                <service.icon className={service.color} size={32} strokeWidth={2} />
+              {/* Icon */}
+              <div
+                className="w-12 h-12 rounded-xl flex items-center justify-center mb-6"
+                style={{ background: `${s.accentColor}12`, border: `1px solid ${s.accentColor}25` }}
+              >
+                <s.icon size={22} style={{ color: s.accentColor }} strokeWidth={1.75} />
               </div>
 
-              <h3 className="text-2xl font-bold mb-4 group-hover:text-gradient transition-all duration-300">
-                {service.title}
-              </h3>
-
-              <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-                {service.desc}
+              <h3 className="font-bold text-xl mb-1">{s.title}</h3>
+              <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: s.accentColor }}>
+                {s.tagline}
               </p>
+              <p className="text-sm text-muted-foreground leading-[1.8] mb-6">{s.desc}</p>
 
-              <div 
-                className={`overflow-hidden transition-all duration-500 ${
-                  expandedIndex === index ? 'max-h-96 mb-6' : 'max-h-0'
-                }`}
+              {/* Expandable detail list */}
+              <div
+                className="overflow-hidden transition-all duration-500"
+                style={{ maxHeight: expanded === i ? "300px" : "0px", opacity: expanded === i ? 1 : 0 }}
               >
-                <div className="glass-strong rounded-2xl p-4 space-y-2">
-                  {service.details.map((detail, i) => (
-                    <div 
-                      key={i}
-                      className="flex items-start gap-2 text-sm text-muted-foreground"
-                      style={{
-                        transitionDelay: expandedIndex === index ? `${i * 50}ms` : '0ms',
-                        opacity: expandedIndex === index ? 1 : 0,
-                        transform: expandedIndex === index ? 'translateX(0)' : 'translateX(-10px)',
-                        transition: 'all 0.3s ease-out'
-                      }}
-                    >
-                      <span className={`${service.color} mt-1`}>•</span>
-                      <span>{detail}</span>
-                    </div>
+                <ul className="mb-6 space-y-2.5">
+                  {s.details.map((d, j) => (
+                    <li key={j} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                      <span className="mt-1.5 w-1 h-1 rounded-full shrink-0" style={{ background: s.accentColor }} />
+                      {d}
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
 
-              <Button
-                variant="ghost"
-                size="sm"
-                className="group/btn p-0 h-auto font-semibold text-primary hover:text-primary/80 hover:bg-transparent"
-                onClick={() => setExpandedIndex(expandedIndex === index ? null : index)}
+              <button
+                onClick={() => setExpanded(expanded === i ? null : i)}
+                className="flex items-center gap-1.5 text-sm font-medium transition-colors hover:opacity-75"
+                style={{ color: s.accentColor }}
               >
-                {expandedIndex === index ? (
-                  <>
-                    Show Less
-                    <X size={16} className="ml-2" />
-                  </>
-                ) : (
-                  <>
-                    Learn More
-                    <ArrowRight 
-                      size={16} 
-                      className="ml-2 group-hover/btn:translate-x-1 transition-transform duration-300" 
-                    />
-                  </>
-                )}
-              </Button>
+                {expanded === i ? "Show less" : "Learn more"}
+                <ChevronDown
+                  size={14}
+                  className={`transition-transform duration-300 ${expanded === i ? "rotate-180" : ""}`}
+                />
+              </button>
             </div>
           ))}
         </div>
+
       </div>
     </section>
   );

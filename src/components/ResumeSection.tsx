@@ -1,177 +1,154 @@
-import { useScrollAnimation } from "./useScrollAnimation";
-import { useState } from "react";
-import { Eye, ExternalLink, FileText } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { gsap } from "@/lib/scrollManager";
+import { FileText, Download, ExternalLink, Briefcase, GraduationCap, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const resumes = [
+const timeline = [
   {
-    title: "Web Development",
-    subtitle: "Full-Stack Expertise",
-    description: "React, Flask, TypeScript, and modern UI/UX frameworks",
-    file: "/resumes/Web_Development_CV_Resume.pdf",
-    color: "from-blue-500/20 to-cyan-500/20",
-    iconColor: "text-cyan-400",
-    previewText: [
-      "TOUSEEF UR REHMAN",
-      "Full-Stack Web Developer",
-      "• React & TypeScript Expert",
-      "• Flask Backend Development",
-      "• Modern UI/UX Design",
-      "• Responsive Web Apps",
-    ],
+    type: "work",
+    icon: Briefcase,
+    title: "Machine Learning Intern",
+    org: "Elevvo — Remote (Egypt)",
+    period: "Sep 2025 · 1 Month",
+    desc: "Delivered a full computer vision pipeline (PyTorch & OpenCV), built loan-approval predictive models, K-Means clustering pipelines, and a MovieLens recommendation engine.",
+    color: "#A855F7",
   },
   {
-    title: "AI / ML Engineering",
-    subtitle: "Intelligent Systems",
-    description: "Machine learning, NLP, data analysis, and Python",
-    file: "/resumes/AI_ML_CV_Resume.pdf",
-    color: "from-purple-500/20 to-pink-500/20",
-    iconColor: "text-pink-400",
-    previewText: [
-      "TOUSEEF UR REHMAN",
-      "AI/ML Engineer",
-      "• Machine Learning Models",
-      "• Natural Language Processing",
-      "• Data Analysis & Visualization",
-      "• Python & Scikit-learn",
-    ],
+    type: "work",
+    icon: Briefcase,
+    title: "Website Developer Intern",
+    org: "RedFort360 — Wah Cantt, Pakistan",
+    period: "May 2025 – Aug 2025 · 4 Months",
+    desc: "Engineered responsive React UIs, built Flask REST APIs with Supabase PostgreSQL, and deployed applications on Render and Railway in agile sprints.",
+    color: "#3B82F6",
+  },
+  {
+    type: "edu",
+    icon: GraduationCap,
+    title: "BS Computer Science",
+    org: "HITEC University Taxila — Taxila, Punjab, Pakistan",
+    period: "Sep 2022 – Sep 2026 · GPA 3.27 / 4.0",
+    desc: "Machine Learning, Deep Learning, Data Mining, NLP, Computer Vision, Software Engineering, Database Systems, Algorithms & Data Structures.",
+    color: "#10B981",
+  },
+  {
+    type: "cert",
+    icon: Award,
+    title: "Full-Stack Web Development",
+    org: "Prodigy InfoTech",
+    period: "2024",
+    desc: "Built four real-world applications across front-end and back-end tracks.",
+    color: "#F59E0B",
   },
 ];
 
-const ResumeCard = ({ resume, index, showPreview, onPreviewChange }: {
-  resume: typeof resumes[0];
-  index: number;
-  showPreview: boolean;
-  onPreviewChange: (show: boolean) => void;
-}) => {
+const ResumeSection = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(".resume-heading",
+        { opacity: 0, y: 50 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out",
+          scrollTrigger: { trigger: ".resume-heading", start: "top 88%", once: true } }
+      );
+      gsap.fromTo(".timeline-item",
+        { opacity: 0, x: -50 },
+        { opacity: 1, x: 0, duration: 0.6, ease: "power3.out", stagger: 0.12,
+          scrollTrigger: { trigger: ".timeline-item", start: "top 88%", once: true } }
+      );
+      gsap.fromTo(".resume-cta",
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 0.7, ease: "power3.out",
+          scrollTrigger: { trigger: ".resume-cta", start: "top 90%", once: true } }
+      );
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <div
-      className="relative group"
-      style={{
-        transitionDelay: `${index * 150}ms`,
-      }}
-    >
-      <div className="relative glass rounded-3xl overflow-hidden hover:glow-border transition-all duration-300">
-        <div className="relative z-10 p-8">
-          <div className="flex justify-center mb-6">
-            <div className={`relative w-20 h-20 rounded-2xl bg-gradient-to-br ${resume.color} flex items-center justify-center`}>
-              <FileText className={`${resume.iconColor}`} size={36} />
-            </div>
-          </div>
+    <section id="resume" ref={sectionRef} className="py-28 md:py-36">
+      <div className="container mx-auto px-6 max-w-6xl">
 
-          <div className="text-center mb-6">
-            <h3 className="font-bold text-xl mb-1">
-              {resume.title}
-            </h3>
-            <p className="text-sm text-primary/80 font-medium mb-3">{resume.subtitle}</p>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              {resume.description}
-            </p>
-          </div>
+        <div className="resume-heading text-center mb-20 will-change-transform">
+          <span className="section-label mb-5 inline-flex">Experience</span>
+          <h2 className="text-4xl md:text-5xl font-bold mt-4">
+            My <span className="text-gradient">Journey</span>
+          </h2>
+        </div>
 
-          <div className="h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent mb-6" />
+        <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-start max-w-5xl mx-auto">
 
-          <div className="flex gap-3 justify-center">
-            <div 
-              className="relative"
-              onMouseEnter={() => onPreviewChange(true)}
-              onMouseLeave={() => onPreviewChange(false)}
-            >
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="rounded-full border-primary/50 hover:bg-primary/10 transition-all duration-300"
-              >
-                <Eye size={16} className="mr-2" /> Preview
-              </Button>
+          {/* Timeline */}
+          <div className="relative">
+            {/* Vertical line */}
+            <div className="absolute left-[19px] top-0 bottom-0 w-px bg-white/8" />
 
-              <div 
-                className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-3 transition-all duration-300 pointer-events-none z-50 ${
-                  showPreview ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
-                }`}
-              >
-                <div className="relative">
-                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-black" />
-                  
-                  <div className={`bg-black rounded-xl p-3 w-52 shadow-2xl border-2 ${
-                    index === 0 ? 'border-cyan-500/50' : 'border-pink-500/50'
-                  }`}>
-                    <div className="flex items-center gap-2 mb-2 pb-2 border-b border-white/20">
-                      <FileText className={resume.iconColor} size={14} />
-                      <span className="text-[10px] font-semibold text-white">Resume Preview</span>
+            <div className="space-y-6">
+              {timeline.map((item, i) => (
+                <div key={i} className="timeline-item flex gap-5 will-change-transform">
+                  {/* Dot */}
+                  <div
+                    className="shrink-0 w-10 h-10 rounded-full flex items-center justify-center z-10 bg-background"
+                    style={{ border: `1px solid ${item.color}40`, background: `${item.color}10` }}
+                  >
+                    <item.icon size={15} style={{ color: item.color }} />
+                  </div>
+
+                  {/* Content */}
+                  <div className="bg-card border border-white/8 rounded-xl p-5 flex-1 -mt-0.5 hover:border-white/16 transition-colors duration-200">
+                    <div className="flex justify-between items-start gap-2 flex-wrap mb-0.5">
+                      <h3 className="font-semibold text-sm">{item.title}</h3>
+                      <span
+                        className="text-[10px] text-muted-foreground shrink-0"
+                        style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                      >
+                        {item.period}
+                      </span>
                     </div>
-                    
-                    <div className="space-y-1 font-mono text-[9px] leading-relaxed">
-                      {resume.previewText.map((line, i) => (
-                        <div 
-                          key={i}
-                          className={`${
-                            i === 0 ? 'font-bold text-[10px] text-gradient' : 
-                            i === 1 ? 'text-primary/90 font-semibold text-[9px]' : 
-                            'text-gray-300'
-                          } transition-all duration-300`}
-                          style={{
-                            transitionDelay: `${i * 50}ms`,
-                            opacity: showPreview ? 1 : 0,
-                            transform: showPreview ? 'translateX(0)' : 'translateX(-10px)'
-                          }}
-                        >
-                          {line}
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className={`absolute top-0 right-0 w-12 h-12 bg-gradient-to-br ${resume.color} rounded-tr-xl rounded-bl-full opacity-20`} />
+                    <p className="text-xs font-medium mb-2" style={{ color: item.color }}>{item.org}</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Download card */}
+          <div className="resume-cta will-change-transform md:sticky md:top-32">
+            <div className="bg-card border border-white/8 rounded-2xl p-8 text-center">
+              <div
+                className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-6"
+                style={{ background: "hsl(var(--primary)/0.12)", border: "1px solid hsl(var(--primary)/0.2)" }}
+              >
+                <FileText className="text-primary" size={24} />
+              </div>
+
+              <h3 className="font-bold text-lg mb-2">Full Resume</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed mb-7 max-w-[200px] mx-auto">
+                Download the complete PDF with skills, experience, and education.
+              </p>
+
+              <div className="flex gap-3 justify-center">
+                <Button
+                  asChild variant="outline" size="sm"
+                  className="rounded-full border-white/15 hover:bg-white/5"
+                >
+                  <a href="/resumes/Touseef Ur Rehman.pdf" target="_blank" rel="noopener noreferrer">
+                    <ExternalLink size={13} className="mr-1.5" /> View
+                  </a>
+                </Button>
+                <Button asChild size="sm"
+                  className="rounded-full bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20"
+                >
+                  <a href="/resumes/Touseef Ur Rehman.pdf" download>
+                    <Download size={13} className="mr-1.5" /> Download
+                  </a>
+                </Button>
               </div>
             </div>
-
-            <Button 
-              asChild
-              size="sm" 
-              className="rounded-full bg-primary hover:bg-primary/80 shadow-lg shadow-primary/25 transition-all duration-300"
-            >
-              <a href={resume.file} target="_blank" rel="noopener noreferrer">
-                <ExternalLink size={16} className="mr-2" /> View
-              </a>
-            </Button>
           </div>
-        </div>
-      </div>
-    </div>
-  );
-};
 
-const ResumeSection = () => {
-  const { ref, isVisible } = useScrollAnimation();
-  const [showPreview, setShowPreview] = useState<number | null>(null);
-
-  return (
-    <section id="resume" className="py-24 relative overflow-hidden">
-      <div
-        ref={ref}
-        className={`container mx-auto px-4 transition-all duration-700 ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-        }`}
-      >
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-3">
-            My <span className="text-gradient">Resume</span>
-          </h2>
-          <p className="text-muted-foreground text-sm">Choose your preferred version</p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {resumes.map((resume, index) => (
-            <ResumeCard
-              key={resume.title}
-              resume={resume}
-              index={index}
-              showPreview={showPreview === index}
-              onPreviewChange={(show) => setShowPreview(show ? index : null)}
-            />
-          ))}
         </div>
       </div>
     </section>
