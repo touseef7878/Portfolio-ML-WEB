@@ -84,7 +84,7 @@ const ContactSection = () => {
           <div className="contact-col will-change-transform space-y-5">
             <div className="bg-card border border-white/8 rounded-2xl p-6 space-y-5">
               {[
-                { icon: <MapPin size={14} />, label: "Location",     value: "Lahore, Pakistan" },
+                { icon: <MapPin size={14} />, label: "Location",     value: "Taxila, Pakistan" },
                 { icon: <Clock size={14} />,  label: "Availability", value: "Open to freelance & internships" },
               ].map((item) => (
                 <div key={item.label} className="flex items-center gap-4">
