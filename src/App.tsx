@@ -8,6 +8,7 @@ import { ThemeProvider } from "next-themes";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Loader from "./components/Loader";
+import AiAssistant from "./components/AiAssistant";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ const App = () => {
                 <Route path="/" element={<Index />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
+              <AiAssistant />
             </BrowserRouter>
           </TooltipProvider>
         </QueryClientProvider>
