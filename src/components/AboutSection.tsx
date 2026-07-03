@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { gsap, ScrollTrigger } from "@/lib/scrollManager";
 import AnimatedCounter from "./AnimatedCounter";
 import { useScrollAnimation } from "./useScrollAnimation";
-import profilePhoto from "@/assets/WhatsApp Image 2026-07-02 at 9.21.12 PM.jpeg";
+import profilePhoto from "@/assets/ChatGPT Image Jul 3, 2026, 08_48_20 PM.png";
 
 const stats = [
   { value: "7+",  label: "Projects" },

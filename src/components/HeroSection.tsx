@@ -122,35 +122,21 @@ const HeroSection = () => {
         aria-hidden="true"
       >
         <div
-          className="absolute top-[15%] right-[10%] w-[520px] h-[520px] rounded-full"
-          style={{
-            background:
-              "radial-gradient(circle at 40% 40%, hsl(217 91% 60% / 0.25) 0%, transparent 65%)",
-          }}
-        />
-        <div
           className="absolute top-[50%] left-[5%] w-[380px] h-[380px] rounded-full"
           style={{
             background:
               "radial-gradient(circle, hsl(189 94% 43% / 0.18) 0%, transparent 65%)",
           }}
         />
-        <div
-          className="absolute bottom-[10%] right-[30%] w-[280px] h-[280px] rounded-full"
-          style={{
-            background:
-              "radial-gradient(circle, hsl(263 90% 65% / 0.14) 0%, transparent 65%)",
-          }}
-        />
       </div>
 
       {/* ─ Content ─ */}
       <div className="hero-content relative z-10 w-full container mx-auto px-6 max-w-6xl">
-        <div className="grid md:grid-cols-2 gap-16 items-center min-h-screen py-32 md:py-0">
+        <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center min-h-screen pt-24 pb-10 md:py-0">
 
           {/* Left — Text */}
           <div ref={textRef} className="will-change-transform">
-            <h1 className="text-5xl md:text-7xl font-extrabold leading-[1.05] tracking-tight mb-5">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold leading-[1.05] tracking-tight mb-5">
               Touseef<br />
               <span className="text-gradient">Ur Rehman</span>
             </h1>
@@ -213,29 +199,67 @@ const HeroSection = () => {
           </div>
 
           {/* Right — Photo */}
-          <div ref={photoRef} className="hidden md:flex justify-center items-center will-change-transform">
-            <div className="relative">
-              {/* Card */}
-              <div className="relative w-[280px] h-[340px] lg:w-[320px] lg:h-[400px] rounded-[1.75rem] overflow-hidden border border-white/10 shadow-2xl shadow-black/40">
+          <div ref={photoRef} className="flex justify-center items-center will-change-transform py-10 md:py-0">
+            <div className="relative flex items-center justify-center">
+
+              {/* Outer square ring — rotated slightly */}
+              <div
+                className="absolute pointer-events-none"
+                style={{
+                  width: "256px",
+                  height: "256px",
+                  borderRadius: "2rem",
+                  border: "1.5px solid rgba(99,149,255,0.3)",
+                  transform: "rotate(6deg) scale(1.15)",
+                }}
+              />
+
+              {/* Inner square ring — just outside the image */}
+              <div
+                className="absolute pointer-events-none"
+                style={{
+                  width: "256px",
+                  height: "256px",
+                  borderRadius: "2rem",
+                  border: "1px solid rgba(99,149,255,0.15)",
+                  transform: "rotate(6deg) scale(1.04)",
+                }}
+              />
+
+              {/* Soft glow */}
+              <div
+                className="absolute pointer-events-none"
+                style={{
+                  width: "256px",
+                  height: "256px",
+                  borderRadius: "2rem",
+                  background: "radial-gradient(ellipse, hsl(217 80% 55% / 0.1) 0%, transparent 70%)",
+                  filter: "blur(20px)",
+                }}
+              />
+
+              {/* Image clipped to rounded square */}
+              <div
+                style={{
+                  width: "230px",
+                  height: "256px",
+                  borderRadius: "1.75rem",
+                  overflow: "hidden",
+                  flexShrink: 0,
+                  position: "relative",
+                  zIndex: 1,
+                }}
+              >
                 <img
                   src={profilePhoto}
                   alt="Touseef Ur Rehman"
-                  className="w-full h-full object-cover object-top"
+                  style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }}
                   loading="eager"
                   decoding="async"
+                  draggable={false}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
               </div>
 
-              {/* Floating badges */}
-              <div className="absolute -left-12 top-8 glass rounded-xl px-4 py-2.5 shadow-xl animate-float">
-                <p className="text-xl font-extrabold text-gradient leading-none">7+</p>
-                <p className="text-[10px] text-white/50 mt-0.5">Projects</p>
-              </div>
-              <div className="absolute -right-8 bottom-14 glass rounded-xl px-4 py-2.5 shadow-xl animate-float-delayed">
-                <p className="text-xl font-extrabold text-gradient leading-none">10+</p>
-                <p className="text-[10px] text-white/50 mt-0.5">Technologies</p>
-              </div>
             </div>
           </div>
 
