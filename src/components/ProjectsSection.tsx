@@ -3,10 +3,12 @@ import { gsap } from "@/lib/scrollManager";
 import { Github, ArrowUpRight, ExternalLink } from "lucide-react";
 
 // Project images
-import imgOcean      from "@/assets/project-sentiment.webp";
-import imgDuonex     from "@/assets/project-scores.webp";
-import imgEcommerce  from "@/assets/project-ecommerce.webp";
-import imgCyber      from "@/assets/project-chat.webp";
+import imgOcean      from "@/assets/project-oceanscan.png";
+import imgDuonex     from "@/assets/duonex.png";
+import imgBilal      from "@/assets/project-bilal-clothes.png";
+import imgLibrary    from "@/assets/project-hitec-library.png";
+import imgGHS        from "@/assets/project-ghs-khanpur.png";
+import imgCyber      from "@/assets/project-sentiment.webp";
 
 type Category = "all" | "web" | "aiml";
 
@@ -18,7 +20,7 @@ const projects = [
     desc: "YOLOv26 object detection on ~16,500 images across 8 debris classes (71.5% mAP@50). LSTM/GRU pollution forecasting across 4 ocean regions — R² up to 0.929 for the Pacific.",
     tags: ["PyTorch", "YOLOv26", "React", "FastAPI", "Supabase"],
     cat: "aiml" as Category,
-    github: "https://github.com/touseef7878",
+    github: "https://github.com/touseef7878/FYP-HITEC",
     demo: null,
     badge: "Final Year Project",
     image: imgOcean,
@@ -32,27 +34,53 @@ const projects = [
     tags: ["Next.js", "Tailwind", "Vercel"],
     cat: "web" as Category,
     github: null,
-    demo: "https://duonex.net",
+    demo: "https://duonex.vercel.app/",
     badge: "Co-Founder",
     image: imgDuonex,
     accent: "#22C55E",
   },
   {
-    title: "E-Commerce Platform",
+    title: "Bilal Clothes",
     number: "03",
     problem: "COD-first storefront for a Pakistani clothing brand.",
-    desc: "Full storefront + role-based admin panel enforced via Supabase RLS (owner vs operator). COD checkout with Safepay integration and WhatsApp fallback.",
-    tags: ["Next.js", "Supabase", "Vercel", "SMTP"],
+    desc: "Mobile-first e-commerce on Next.js App Router + Supabase. COD, bank transfer & WhatsApp ordering. Full admin panel with role-based access for owner/operator/staff.",
+    tags: ["Next.js", "Supabase", "Vercel", "Role-Based Auth"],
     cat: "web" as Category,
     github: null,
-    demo: null,
+    demo: "https://bilalclothes.vercel.app/",
     badge: "Client Project",
-    image: imgEcommerce,
+    image: imgBilal,
+    accent: "#22C55E",
+  },
+  {
+    title: "HITEC Library",
+    number: "04",
+    problem: "Full-stack university library portal with online book reading.",
+    desc: "React + TypeScript + Supabase. Admin management, student self-service, online reading via Project Gutenberg, and real book covers via Open Library API.",
+    tags: ["React", "TypeScript", "Supabase", "Open Library"],
+    cat: "web" as Category,
+    github: "https://github.com/touseef7878/HITEC-Library",
+    demo: "https://hitec-library.vercel.app/",
+    badge: "Web App",
+    image: imgLibrary,
+    accent: "#22C55E",
+  },
+  {
+    title: "GHS Khanpur",
+    number: "05",
+    problem: "Teacher attendance management for a government high school.",
+    desc: "Live dashboards, weekly trend charts, teacher registry, daily attendance marking, CSV export, and Supabase-backed admin panel. Built for Govt High School Khanpur, KPK.",
+    tags: ["React", "Vite", "Supabase", "Dashboard"],
+    cat: "web" as Category,
+    github: null,
+    demo: "https://ghs-khanpur.vercel.app/",
+    badge: "Client Project",
+    image: imgGHS,
     accent: "#22C55E",
   },
   {
     title: "Cyberbullying Detection",
-    number: "04",
+    number: "06",
     problem: "Benchmark transformer models for cyberbullying detection.",
     desc: "Compared BERT, RoBERTa, XLNet, and GPT-2 on FGCD and Twitter datasets. Full reproducibility study with experiment tracking.",
     tags: ["PyTorch", "HuggingFace", "BERT", "NLTK"],
