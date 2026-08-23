@@ -1,31 +1,31 @@
 import { useEffect, useRef, useState } from "react";
-import { Github, Linkedin, ArrowDown, MessageCircle, Download } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { gsap, ScrollTrigger } from "@/lib/scrollManager";
+import { Github, Linkedin, MessageCircle, Globe, Download, ArrowRight, MapPin } from "lucide-react";
+import { gsap } from "@/lib/scrollManager";
 import profilePhoto from "@/assets/WhatsApp Image 2026-07-02 at 9.21.12 PM.jpeg";
 
-const roles = ["Full-Stack Developer", "AI / ML Engineer", "Python Developer"];
+const roles = ["Full-Stack Developer", "ML & AI Engineer", "AI Problem Solver"];
+
+const stats = [
+  { value: "2+",  label: "Years Exp." },
+  { value: "10+", label: "Projects" },
+  { value: "3+",  label: "Startups" },
+];
 
 const HeroSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  const orbsRef    = useRef<HTMLDivElement>(null);
-  const textRef    = useRef<HTMLDivElement>(null);
-  const photoRef   = useRef<HTMLDivElement>(null);
-
   const [roleIndex, setRoleIndex] = useState(0);
   const [text, setText]           = useState("");
   const [deleting, setDeleting]   = useState(false);
 
-  /* ── Typewriter ── */
   useEffect(() => {
     const current = roles[roleIndex];
     let t: ReturnType<typeof setTimeout>;
     if (!deleting && text.length < current.length) {
-      t = setTimeout(() => setText(current.slice(0, text.length + 1)), 70);
+      t = setTimeout(() => setText(current.slice(0, text.length + 1)), 60);
     } else if (!deleting && text.length === current.length) {
-      t = setTimeout(() => setDeleting(true), 1800);
+      t = setTimeout(() => setDeleting(true), 2200);
     } else if (deleting && text.length > 0) {
-      t = setTimeout(() => setText(text.slice(0, -1)), 35);
+      t = setTimeout(() => setText(text.slice(0, -1)), 28);
     } else {
       setDeleting(false);
       setRoleIndex((p) => (p + 1) % roles.length);
@@ -33,248 +33,277 @@ const HeroSection = () => {
     return () => clearTimeout(t);
   }, [text, deleting, roleIndex]);
 
-  /* ── GSAP: entrance + scrub parallax ── */
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const section = sectionRef.current!;
+      const tl = gsap.timeline({ delay: 0.1, defaults: { ease: "power4.out" } });
+      tl.fromTo(".hero-photo-wrap",    { opacity: 0, x: -30 },           { opacity: 1, x: 0, duration: 0.8 }, 0);
+      tl.fromTo(".hero-name-line",     { opacity: 0, y: 30 },            { opacity: 1, y: 0, duration: 0.55, stagger: 0.1 }, 0.2);
+      tl.fromTo(".hero-stat-chip",     { opacity: 0, y: 14, scale: 0.9 },{ opacity: 1, y: 0, scale: 1, duration: 0.38, stagger: 0.07 }, 0.4);
+      tl.fromTo(".hero-role-row",      { opacity: 0, y: 12 },            { opacity: 1, y: 0, duration: 0.38 }, 0.55);
+      tl.fromTo(".hero-bio",           { opacity: 0, y: 10 },            { opacity: 1, y: 0, duration: 0.38 }, 0.65);
+      tl.fromTo(".hero-btn",           { opacity: 0, y: 8 },             { opacity: 1, y: 0, duration: 0.32, stagger: 0.08 }, 0.75);
+      tl.fromTo(".hero-social",        { opacity: 0, y: 6 },             { opacity: 1, y: 0, duration: 0.28, stagger: 0.05 }, 0.85);
+      tl.fromTo(".hero-right-socials", { opacity: 0, x: 10 },            { opacity: 1, x: 0, duration: 0.32, stagger: 0.05 }, 0.9);
 
-      // ── Entrance animations (play once on load) ──
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      tl.fromTo(textRef.current,  { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1.0 }, 0.15)
-        .fromTo(photoRef.current, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9 }, 0.35);
-
-      // ── Scrub parallax: orbs move at 50% scroll speed (background layer) ──
-      // The key: NO overflow-hidden on section, scrub ties to scroll position
-      gsap.to(orbsRef.current, {
-        y: "40%",           // moves DOWN as user scrolls DOWN — feels like depth
-        ease: "none",       // mandatory for scrub
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,      // scrub:true = perfectly tied to scroll position
-        },
+      gsap.to(".hero-photo-wrap", {
+        y: "6%", ease: "none",
+        scrollTrigger: { trigger: sectionRef.current, start: "top top", end: "bottom top", scrub: 1.5 },
       });
-
-      // ── Scrub parallax: text moves slightly slower than scroll (foreground) ──
-      gsap.to(textRef.current, {
-        y: "18%",
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1.2,
-        },
-      });
-
-      // ── Scrub parallax: photo moves at a different rate ──
-      gsap.to(photoRef.current, {
-        y: "12%",
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1.5,
-        },
-      });
-
-      // ── Fade out hero content as user scrolls away ──
-      gsap.to(section.querySelector(".hero-content"), {
-        opacity: 0,
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "60% top",
-          end: "bottom top",
-          scrub: true,
-        },
+      gsap.to(".hero-fade-out", {
+        opacity: 0, ease: "none",
+        scrollTrigger: { trigger: sectionRef.current, start: "55% top", end: "bottom top", scrub: true },
       });
     }, sectionRef);
-
     return () => ctx.revert();
   }, []);
 
   return (
-    /* NOTE: No overflow-hidden — required for parallax to be visible outside section bounds */
     <section
       id="hero"
       ref={sectionRef}
-      className="relative min-h-screen flex items-center"
-      style={{ isolation: "isolate" }}
+      className="relative overflow-x-hidden"
+      style={{ background: "#080C0A", minHeight: "100svh" }}
     >
-      {/* ─ Layer 0: Fixed grid bg (CSS only, no JS) ─ */}
-      <div
-        className="absolute inset-0 -z-20 pointer-events-none"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px)," +
-            "linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)",
-          backgroundSize: "64px 64px",
-        }}
-      />
+      {/* Ambient glow */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        background: "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(20,60,30,0.3) 0%, transparent 70%)",
+      }} />
+      {/* Dot grid */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        backgroundImage: "radial-gradient(circle, rgba(34,197,94,0.06) 1px, transparent 1px)",
+        backgroundSize: "40px 40px",
+      }} />
 
-      {/* ─ Layer 1: Parallax orbs (scrubbed by GSAP) ─ */}
-      <div
-        ref={orbsRef}
-        className="absolute inset-0 -z-10 pointer-events-none will-change-transform"
-        aria-hidden="true"
-      >
-        <div
-          className="absolute top-[50%] left-[5%] w-[380px] h-[380px] rounded-full"
-          style={{
-            background:
-              "radial-gradient(circle, hsl(189 94% 43% / 0.18) 0%, transparent 65%)",
-          }}
-        />
-      </div>
+      <div className="hero-fade-out relative z-10 container mx-auto px-4 sm:px-5 max-w-7xl py-24 md:py-0 md:h-screen md:flex md:items-center">
 
-      {/* ─ Content ─ */}
-      <div className="hero-content relative z-10 w-full container mx-auto px-6 max-w-6xl">
-        <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center min-h-screen pt-24 pb-10 md:py-0">
+        {/* ── Mobile layout: single column ── */}
+        {/* ── Desktop layout: 2-col grid ── */}
+        <div className="w-full flex flex-col md:grid md:gap-3" style={{ gridTemplateColumns: "200px 1fr" }}>
 
-          {/* Left — Text */}
-          <div ref={textRef} className="will-change-transform">
-            <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold leading-[1.05] tracking-tight mb-5">
-              Touseef<br />
-              <span className="text-gradient">Ur Rehman</span>
-            </h1>
+          {/* ── LEFT: Photo + socials ── */}
+          <div className="hero-photo-wrap opacity-0 flex flex-col items-center gap-4 mb-4 md:mb-0">
 
-            {/* Typewriter role */}
-            <div className="h-10 flex items-center mb-5">
-              <span
-                className="text-lg md:text-2xl font-medium text-muted-foreground"
-                style={{ fontFamily: "'JetBrains Mono', monospace" }}
-              >
-                {text}
-                <span
-                  className="inline-block w-[2px] h-[1.1em] bg-primary align-middle ml-[2px]"
-                  style={{ animation: "typewriter-blink 1s step-end infinite" }}
-                />
-              </span>
+            {/* Glass photo card */}
+            <div className="relative" style={{ width: "min(185px, 55vw)", aspectRatio: "185/215" }}>
+              <div className="absolute inset-0 rounded-2xl" style={{
+                transform: "rotate(5deg) translate(7px,7px)",
+                background: "rgba(34,197,94,0.06)",
+                border: "1px solid rgba(34,197,94,0.15)",
+              }} />
+              <div className="absolute inset-0 rounded-2xl" style={{
+                transform: "rotate(2.5deg) translate(3px,3px)",
+                background: "rgba(255,255,255,0.025)",
+                border: "1px solid rgba(255,255,255,0.05)",
+              }} />
+              <div className="absolute inset-0 rounded-2xl overflow-hidden" style={{
+                border: "1px solid rgba(255,255,255,0.08)",
+                boxShadow: "0 16px 48px rgba(0,0,0,0.5)",
+              }}>
+                <img src={profilePhoto} alt="Touseef Ur Rehman"
+                  className="w-full h-full object-cover object-top"
+                  style={{ filter: "brightness(0.92)" }}
+                  loading="eager" decoding="async" draggable={false} />
+                <div className="absolute inset-0" style={{
+                  background: "linear-gradient(180deg, rgba(20,80,40,0.1) 0%, transparent 40%)",
+                }} />
+              </div>
+              {/* Available badge */}
+              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-2.5 py-1 rounded-full whitespace-nowrap"
+                style={{ background: "#0D1410", border: "1px solid rgba(34,197,94,0.25)", boxShadow: "0 4px 12px rgba(0,0,0,0.4)" }}>
+                <span className="green-dot green-pulse" />
+                <span className="text-[9px] font-semibold" style={{ color: "#22C55E" }}>Available</span>
+              </div>
             </div>
 
-            <p className="text-sm md:text-base text-muted-foreground leading-[1.75] max-w-md mb-9">
-              I design and ship intelligent web applications — merging clean front-end
-              engineering with Python-powered AI, from full-stack React &amp; Flask apps
-              to NLP pipelines and predictive ML models.
-            </p>
-
-            {/* CTAs */}
-            <div className="flex flex-wrap gap-3 mb-9">
-              <Button
-                asChild size="lg"
-                className="rounded-full px-8 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 font-semibold transition-transform duration-150 hover:scale-[1.03] active:scale-[0.97]"
-              >
-                <a href="#projects">View My Work</a>
-              </Button>
-              <Button
-                asChild variant="outline" size="lg"
-                className="rounded-full px-8 border-white/15 hover:bg-white/5 font-medium transition-transform duration-150 hover:scale-[1.03] active:scale-[0.97]"
-              >
-                <a href="/resumes/Touseef Ur Rehman.pdf" target="_blank" rel="noopener noreferrer" download>
-                  <Download size={15} className="mr-2" />
-                  Resume
-                </a>
-              </Button>
-            </div>
-
-            {/* Socials */}
-            <div className="flex gap-3">
+            {/* Social icons */}
+            <div className="flex gap-1.5 mt-2">
               {[
-                { href: "https://github.com/touseef7878",                          icon: <Github size={16} />,       label: "GitHub" },
-                { href: "https://www.linkedin.com/in/touseef-ur-rehman-6b2888372", icon: <Linkedin size={16} />,     label: "LinkedIn" },
-                { href: "https://wa.me/923476992071",                              icon: <MessageCircle size={16} />, label: "WhatsApp" },
+                { href: "https://touseef.eu.cc",                       icon: <Globe size={13} />,         label: "Website" },
+                { href: "https://www.linkedin.com/in/touseef123",      icon: <Linkedin size={13} />,      label: "LinkedIn" },
+                { href: "https://github.com/touseef7878",               icon: <Github size={13} />,        label: "GitHub" },
+                { href: "https://wa.me/923101533429",                   icon: <MessageCircle size={13} />, label: "WhatsApp" },
               ].map((s) => (
-                <a
-                  key={s.label} href={s.href}
-                  target="_blank" rel="noopener noreferrer" aria-label={s.label}
-                  className="w-10 h-10 rounded-full border border-white/12 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/50 hover:bg-primary/8 transition-all duration-200"
-                >
+                <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}
+                  className="hero-social opacity-0 w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200"
+                  style={{ background: "#111814", border: "1px solid #1E2A20", color: "#4A6650" }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#22C55E"; (e.currentTarget as HTMLElement).style.borderColor = "rgba(34,197,94,0.3)"; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "#4A6650"; (e.currentTarget as HTMLElement).style.borderColor = "#1E2A20"; }}>
                   {s.icon}
                 </a>
               ))}
             </div>
+
+            {/* Info cards — visible on desktop, hidden on mobile (shown inline in right card instead) */}
+            <div className="w-full flex flex-col gap-2 mt-1 hidden md:flex">
+              {[
+                { label: "Location", value: "Taxila, Pakistan", icon: "📍" },
+                { label: "Education", value: "HITEC Uni ", icon: "🎓" },
+                { label: "Co-Founder", value: "Duonex Studio", icon: "🚀" },
+              ].map((item) => (
+                <div key={item.label}
+                  className="hero-social opacity-0 rounded-xl px-3 py-2.5 flex items-center gap-2.5"
+                  style={{ background: "#111814", border: "1px solid #1E2A20" }}>
+                  <span className="text-[11px]" style={{ flexShrink: 0 }}>{item.icon}</span>
+                  <div className="min-w-0">
+                    <p className="text-[8px] uppercase tracking-widest" style={{ color: "#3A5040" }}>{item.label}</p>
+                    <p className="text-[10px] font-semibold truncate" style={{ color: "#EBEBEB" }}>{item.value}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Right — Photo */}
-          <div ref={photoRef} className="flex justify-center items-center will-change-transform py-10 md:py-0">
-            <div className="relative flex items-center justify-center">
+          {/* ── RIGHT: 2 stacked cards ── */}
+          <div className="flex flex-col gap-3">
 
-              {/* Outer square ring — rotated slightly */}
-              <div
-                className="absolute pointer-events-none"
-                style={{
-                  width: "256px",
-                  height: "256px",
-                  borderRadius: "2rem",
-                  border: "1.5px solid rgba(99,149,255,0.3)",
-                  transform: "rotate(6deg) scale(1.15)",
-                }}
-              />
-
-              {/* Inner square ring — just outside the image */}
-              <div
-                className="absolute pointer-events-none"
-                style={{
-                  width: "256px",
-                  height: "256px",
-                  borderRadius: "2rem",
-                  border: "1px solid rgba(99,149,255,0.15)",
-                  transform: "rotate(6deg) scale(1.04)",
-                }}
-              />
-
-              {/* Soft glow */}
-              <div
-                className="absolute pointer-events-none"
-                style={{
-                  width: "256px",
-                  height: "256px",
-                  borderRadius: "2rem",
-                  background: "radial-gradient(ellipse, hsl(217 80% 55% / 0.1) 0%, transparent 70%)",
-                  filter: "blur(20px)",
-                }}
-              />
-
-              {/* Image clipped to rounded square */}
-              <div
-                style={{
-                  width: "230px",
-                  height: "256px",
-                  borderRadius: "1.75rem",
-                  overflow: "hidden",
-                  flexShrink: 0,
-                  position: "relative",
-                  zIndex: 1,
-                }}
-              >
-                <img
-                  src={profilePhoto}
-                  alt="Touseef Ur Rehman"
-                  style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }}
-                  loading="eager"
-                  decoding="async"
-                  draggable={false}
-                />
+            {/* Card 1: Name + stats */}
+            <div className="rounded-2xl p-4 sm:p-5" style={{ background: "#0F1612", border: "1px solid #1A2B1E" }}>
+              <div className="flex items-start justify-between gap-3">
+                {/* Name */}
+                <div className="min-w-0">
+                  <div className="overflow-hidden">
+                    <h1 className="hero-name-line opacity-0 font-black tracking-tight leading-none"
+                      style={{ fontSize: "clamp(1.9rem, 8vw, 3.6rem)", color: "#FFFFFF" }}>
+                      Touseef
+                    </h1>
+                  </div>
+                  <div className="overflow-hidden">
+                    <h1 className="hero-name-line opacity-0 font-black tracking-tight leading-none"
+                      style={{ fontSize: "clamp(1.9rem, 8vw, 3.6rem)", color: "#22C55E" }}>
+                      Ur Rehman
+                    </h1>
+                  </div>
+                </div>
+                {/* Stat chips — desktop shows all 3, mobile shows only 2 to save space */}
+                <div className="flex gap-1.5 sm:gap-2 shrink-0 pt-1">
+                  {stats.map((s, i) => (
+                    <div key={s.label}
+                      className={`hero-stat-chip opacity-0 text-center rounded-xl px-2 sm:px-3 py-2 min-w-[48px] sm:min-w-[58px]${i === 2 ? " hidden sm:block" : ""}`}
+                      style={{ background: "#151F17", border: "1px solid #1E2B20" }}>
+                      <p className="text-sm sm:text-base font-black leading-none mb-0.5" style={{ color: "#22C55E" }}>{s.value}</p>
+                      <p className="text-[7px] sm:text-[8px] uppercase tracking-widest font-medium" style={{ color: "#4A6650" }}>{s.label}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
+            </div>
 
+            {/* Card 2: Role + bio + buttons */}
+            <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid #1A2B1E" }}>
+              <div className="flex overflow-hidden">
+
+                {/* Main content */}
+                <div className="flex-1 p-4 sm:p-5" style={{ background: "#0F1612", minWidth: 0 }}>
+                  {/* Typewriter */}
+                  <div className="hero-role-row opacity-0 flex items-center gap-1.5 mb-3">
+                    <span className="text-xs sm:text-sm font-bold" style={{ color: "#FFFFFF" }}>
+                      {text}
+                      <span className="inline-block w-[2px] h-[0.9em] bg-green-400 align-middle ml-[1px]"
+                        style={{ animation: "typewriter-blink 1s step-end infinite" }} />
+                    </span>
+                  </div>
+                  <p className="hero-bio opacity-0 text-xs leading-[1.8] mb-4 sm:mb-5" style={{ color: "#8A9E8E" }}>
+                    AI-driven problem solver, building real-world software. Co-founder of{" "}
+                    <a href="https://duonex.net" target="_blank" rel="noopener noreferrer"
+                      className="font-semibold transition-colors" style={{ color: "#FFFFFF" }}
+                      onMouseEnter={e => (e.currentTarget.style.color = "#22C55E")}
+                      onMouseLeave={e => (e.currentTarget.style.color = "#FFFFFF")}>
+                      Duonex
+                    </a>{" "}
+                    — ML/AI, web &amp; Android solutions.
+                  </p>
+                  <div className="flex flex-wrap gap-2 mb-4 sm:mb-5">
+                    <a href="#projects"
+                      className="hero-btn opacity-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold transition-all duration-200"
+                      style={{ background: "#22C55E", color: "#080C0A" }}
+                      onMouseEnter={e => (e.currentTarget.style.background = "#16A34A")}
+                      onMouseLeave={e => (e.currentTarget.style.background = "#22C55E")}>
+                      View My Work <ArrowRight size={12} />
+                    </a>
+                    <a href="/resumes/Touseef Ur Rehman.pdf" download
+                      className="hero-btn opacity-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium transition-all duration-200"
+                      style={{ border: "1px solid #2A3D2E", color: "#EBEBEB" }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "#4A6650"; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "#2A3D2E"; }}>
+                      <Download size={11} /> Resume
+                    </a>
+                  </div>
+
+                  {/* Tech stack tags */}
+                  <div className="hero-bio opacity-0">
+                    <p className="text-[8px] uppercase tracking-widest mb-2" style={{ color: "#3A5040" }}>Tech Stack</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {["PyTorch", "YOLOv2", "React", "Next.js", "FastAPI", "Supabase", "TypeScript", "scikit-learn"].map((t) => (
+                        <span key={t}
+                          className="text-[9px] px-2 py-1 rounded-md font-medium"
+                          style={{ background: "#151F17", border: "1px solid #1E2B20", color: "#4A7A5A", fontFamily: "'JetBrains Mono', monospace" }}>
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Mobile-only: info cards (Location / Edu / Co-Founder) */}
+                  <div className="md:hidden flex flex-col gap-2 mt-4">
+                    {[
+                      { label: "Location", value: "Taxila, Pakistan", icon: "📍" },
+                      { label: "Education", value: "HITEC Uni", icon: "🎓" },
+                      { label: "Co-Founder", value: "Duonex Studio", icon: "🚀" },
+                    ].map((item) => (
+                      <div key={item.label}
+                        className="hero-social opacity-0 rounded-xl px-3 py-2.5 flex items-center gap-2.5"
+                        style={{ background: "#111814", border: "1px solid #1E2A20" }}>
+                        <span className="text-[11px]" style={{ flexShrink: 0 }}>{item.icon}</span>
+                        <div className="min-w-0">
+                          <p className="text-[8px] uppercase tracking-widest" style={{ color: "#3A5040" }}>{item.label}</p>
+                          <p className="text-[10px] font-semibold truncate" style={{ color: "#EBEBEB" }}>{item.value}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Divider + Mini stats sidebar — hidden on small mobile, visible from sm up */}
+                <div className="hidden sm:flex" style={{ flexShrink: 0 }}>
+                  <div style={{ width: "1px", background: "#1A2B1E" }} />
+                  <div className="flex flex-col justify-between items-center py-4 px-3 gap-2"
+                    style={{ background: "#0F1612", minWidth: "76px" }}>
+                    {stats.map((s) => (
+                      <div key={s.label} className="hero-stat-chip opacity-0 text-center">
+                        <p className="text-xl font-black leading-none mb-0.5" style={{ color: "#22C55E" }}>{s.value}</p>
+                        <p className="text-[7px] uppercase tracking-widest" style={{ color: "#4A6650" }}>{s.label}</p>
+                      </div>
+                    ))}
+                    <div style={{ height: "1px", width: "40px", background: "#1A2B1E" }} />
+                    <div className="hero-right-socials opacity-0 flex flex-col gap-1.5 items-center">
+                      {[
+                        { href: "https://touseef.eu.cc",                       icon: <Globe size={11} />,         label: "Website" },
+                        { href: "https://github.com/touseef7878",               icon: <Github size={11} />,        label: "GitHub" },
+                        { href: "https://www.linkedin.com/in/touseef123",      icon: <Linkedin size={11} />,      label: "LinkedIn" },
+                        { href: "https://wa.me/923101533429",                   icon: <MessageCircle size={11} />, label: "WhatsApp" },
+                        { href: "#contact",                                       icon: <MapPin size={11} />,        label: "Location" },
+                      ].map((s) => (
+                        <a key={s.label} href={s.href}
+                          target={s.href.startsWith("#") ? undefined : "_blank"}
+                          rel={s.href.startsWith("#") ? undefined : "noopener noreferrer"}
+                          aria-label={s.label}
+                          className="w-7 h-7 rounded-md flex items-center justify-center transition-all duration-200"
+                          style={{ background: "#151F17", border: "1px solid #1E2B20", color: "#4A6650" }}
+                          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#22C55E"; (e.currentTarget as HTMLElement).style.borderColor = "rgba(34,197,94,0.25)"; }}
+                          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "#4A6650"; (e.currentTarget as HTMLElement).style.borderColor = "#1E2B20"; }}>
+                          {s.icon}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+              </div>
             </div>
           </div>
 
         </div>
       </div>
-
-      {/* Scroll indicator */}
-      <a
-        href="#about"
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground hover:text-foreground transition-colors animate-bounce-subtle"
-        aria-label="Scroll down"
-      >
-        <span className="text-[9px] uppercase tracking-[0.2em]">Scroll</span>
-        <ArrowDown size={14} />
-      </a>
     </section>
   );
 };

@@ -1,166 +1,135 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/scrollManager";
-import iconLanguages from "@/assets/icon-languages.webp";
-import iconAiml      from "@/assets/icon-aiml.webp";
-import iconWeb       from "@/assets/icon-web.webp";
-import iconTools     from "@/assets/icon-tools.webp";
 
 const categories = [
   {
-    image: iconLanguages,
-    title: "Languages",
-    accentColor: "#3B82F6",
+    title: "Machine Learning / AI",
+    color: "#22C55E",
     skills: [
-      { name: "Python",     pct: 90 },
-      { name: "JavaScript", pct: 80 },
-      { name: "TypeScript", pct: 75 },
-      { name: "HTML / CSS", pct: 88 },
-      { name: "SQL",        pct: 72 },
+      { name: "PyTorch",           pct: 85 },
+      { name: "TensorFlow/Keras",  pct: 80 },
+      { name: "YOLOv26 / OpenCV",  pct: 82 },
+      { name: "scikit-learn",      pct: 88 },
+      { name: "BERT Transformers", pct: 75 },
+      { name: "NLTK / NLP",        pct: 80 },
     ],
-    desc: "Multi-language proficiency for backend logic and frontend interfaces.",
   },
   {
-    image: iconAiml,
-    title: "AI / ML",
-    accentColor: "#A855F7",
+    title: "Full-Stack Web",
+    color: "#FFFFFF",
     skills: [
-      { name: "Scikit-learn",       pct: 82 },
-      { name: "NLTK / NLP",         pct: 78 },
-      { name: "Linear Regression",  pct: 85 },
-      { name: "Sentiment Analysis", pct: 80 },
+      { name: "React / Next.js",   pct: 88 },
+      { name: "TypeScript",        pct: 82 },
+      { name: "FastAPI / Flask",   pct: 85 },
+      { name: "Tailwind CSS",      pct: 92 },
+      { name: "Node.js",           pct: 75 },
     ],
-    desc: "Intelligent, data-driven systems with ML and natural language processing.",
   },
   {
-    image: iconWeb,
-    title: "Web",
-    accentColor: "#06B6D4",
+    title: "Data / Infrastructure",
+    color: "#888888",
     skills: [
-      { name: "React",        pct: 85 },
-      { name: "Flask",        pct: 88 },
-      { name: "Tailwind CSS", pct: 90 },
-      { name: "Vite",         pct: 80 },
-      { name: "shadcn/ui",    pct: 82 },
+      { name: "Supabase/PostgreSQL", pct: 82 },
+      { name: "MySQL",               pct: 78 },
+      { name: "Vercel",              pct: 88 },
+      { name: "Render / Railway",    pct: 80 },
     ],
-    desc: "Fast, responsive web apps with modern frameworks and UI systems.",
   },
   {
-    image: iconTools,
     title: "Tools",
-    accentColor: "#F97316",
+    color: "#888888",
     skills: [
-      { name: "Git & GitHub", pct: 87 },
-      { name: "SQLite",       pct: 80 },
-      { name: "REST APIs",    pct: 85 },
-      { name: "Postman",      pct: 78 },
+      { name: "Git & GitHub",      pct: 90 },
+      { name: "n8n automation",    pct: 72 },
+      { name: "Figma",             pct: 75 },
+      { name: "REST APIs",         pct: 88 },
     ],
-    desc: "Essential toolchain for collaborative, production-ready development.",
   },
 ];
 
 const SkillsSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  const [flipped, setFlipped] = useState<number | null>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(".skills-heading",
-        { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out",
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 0.7, ease: "power3.out",
           scrollTrigger: { trigger: ".skills-heading", start: "top 88%", once: true } }
       );
-      gsap.fromTo(".skill-card",
-        { opacity: 0, y: 60 },
-        { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", stagger: 0.1,
-          scrollTrigger: { trigger: ".skill-card", start: "top 88%", once: true } }
+
+      // Each category block slides up with stagger
+      gsap.fromTo(".skill-category",
+        { opacity: 0, y: 50 },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", stagger: 0.12,
+          scrollTrigger: { trigger: ".skill-category", start: "top 85%", once: true } }
       );
+
+      // Animate skill bars when they enter view
+      document.querySelectorAll(".skill-bar-animated").forEach((el) => {
+        const pct = (el as HTMLElement).dataset.pct || "0";
+        gsap.fromTo(el,
+          { width: "0%" },
+          {
+            width: `${pct}%`,
+            duration: 1.2,
+            ease: "power3.out",
+            scrollTrigger: { trigger: el, start: "top 90%", once: true },
+          }
+        );
+      });
+
     }, sectionRef);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section id="skills" ref={sectionRef} className="py-28 md:py-36">
+    <section id="skills" ref={sectionRef} className="py-28 md:py-36" style={{ background: "#0D0D0D" }}>
       <div className="container mx-auto px-6 max-w-6xl">
 
-        <div className="skills-heading text-center mb-20 will-change-transform">
-          <span className="section-label mb-5 inline-flex">Tech Stack</span>
-          <h2 className="text-4xl md:text-5xl font-bold mt-4">
-            My <span className="text-gradient">Skills</span>
+        <div className="skills-heading mb-20 opacity-0">
+          <span className="section-label mb-4 inline-flex">Tech Stack</span>
+          <h2 className="text-4xl md:text-5xl font-black tracking-tight mt-4" style={{ color: "#FFFFFF" }}>
+            My Skills
           </h2>
-          <p className="text-muted-foreground text-sm mt-4 max-w-xs mx-auto">
-            Hover any card to reveal proficiency levels
+          <p className="text-sm mt-3" style={{ color: "#555555" }}>
+            Tools and technologies I use to build things
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {categories.map((cat, i) => (
-            <div
-              key={cat.title}
-              className="skill-card perspective-1200 h-[280px] cursor-pointer will-change-transform"
-              onMouseEnter={() => setFlipped(i)}
-              onMouseLeave={() => setFlipped(null)}
-              onFocus={() => setFlipped(i)}
-              onBlur={() => setFlipped(null)}
-              tabIndex={0}
-              aria-label={`${cat.title} — click to see skill levels`}
-            >
-              <div
-                className={`relative w-full h-full transform-style-3d transition-transform duration-700 ${
-                  flipped === i ? "rotate-y-180" : ""
-                }`}
-              >
-                {/* ── Front ── */}
-                <div className="absolute inset-0 backface-hidden rounded-2xl border border-white/8 bg-card/80 p-6 flex flex-col hover:border-white/16 transition-colors duration-300 shadow-sm">
-                  <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 shrink-0"
-                    style={{ background: `${cat.accentColor}15`, border: `1px solid ${cat.accentColor}30` }}
-                  >
-                    <img src={cat.image} alt={cat.title} className="w-6 h-6 object-contain" loading="lazy" />
-                  </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          {categories.map((cat) => (
+            <div key={cat.title} className="skill-category opacity-0">
+              {/* Category title */}
+              <div className="flex items-center gap-3 mb-6">
+                <span className="text-xs font-bold uppercase tracking-widest" style={{ color: cat.color }}>
+                  {cat.title}
+                </span>
+                <div className="flex-1 h-px" style={{ background: "#1A1A1A" }} />
+              </div>
 
-                  <h3 className="font-bold text-base mb-1.5" style={{ color: cat.accentColor }}>
-                    {cat.title}
-                  </h3>
-                  <p className="text-[11px] text-muted-foreground leading-relaxed mb-4">{cat.desc}</p>
-
-                  <div className="flex flex-wrap gap-1.5 mt-auto">
-                    {cat.skills.map((s) => (
-                      <span
-                        key={s.name}
-                        className="text-[10px] px-2 py-1 rounded-full bg-white/5 border border-white/8 text-muted-foreground"
-                      >
+              {/* Skills */}
+              <div className="space-y-4">
+                {cat.skills.map((s) => (
+                  <div key={s.name}>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-xs font-medium" style={{ color: "#EBEBEB", fontFamily: "'JetBrains Mono', monospace" }}>
                         {s.name}
                       </span>
-                    ))}
+                      <span className="text-[10px] tabular-nums" style={{ color: "#555555", fontFamily: "'JetBrains Mono', monospace" }}>
+                        {s.pct}%
+                      </span>
+                    </div>
+                    {/* Track */}
+                    <div style={{ height: "2px", background: "#1A1A1A", borderRadius: "99px", overflow: "hidden" }}>
+                      <div
+                        className="skill-bar-animated h-full rounded-full"
+                        data-pct={s.pct}
+                        style={{ background: cat.color, width: "0%" }}
+                      />
+                    </div>
                   </div>
-                </div>
-
-                {/* ── Back ── */}
-                <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-2xl border border-white/10 bg-card/90 p-6 flex flex-col justify-center shadow-sm">
-                  <h3 className="font-bold text-sm mb-5" style={{ color: cat.accentColor }}>
-                    {cat.title}
-                  </h3>
-                  <div className="space-y-3.5">
-                    {cat.skills.map((s) => (
-                      <div key={s.name}>
-                        <div className="flex justify-between items-center mb-1.5">
-                          <span className="text-[11px] font-medium text-foreground/80">{s.name}</span>
-                          <span className="text-[10px] text-muted-foreground">{s.pct}%</span>
-                        </div>
-                        <div className="h-[3px] rounded-full bg-white/8 overflow-hidden">
-                          <div
-                            className="h-full rounded-full transition-all duration-700"
-                            style={{
-                              width: flipped === i ? `${s.pct}%` : "0%",
-                              background: `linear-gradient(90deg, ${cat.accentColor}, ${cat.accentColor}99)`,
-                              transitionDelay: flipped === i ? "200ms" : "0ms",
-                            }}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           ))}

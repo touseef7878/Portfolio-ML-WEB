@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
-import { gsap, ScrollTrigger } from "@/lib/scrollManager";
+import { gsap } from "@/lib/scrollManager";
 import AnimatedCounter from "./AnimatedCounter";
 import { useScrollAnimation } from "./useScrollAnimation";
 import profilePhoto from "@/assets/ChatGPT Image Jul 3, 2026, 08_48_20 PM.png";
 
 const stats = [
-  { value: "7+",  label: "Projects" },
-  { value: "2",   label: "Domains" },
-  { value: "10+", label: "Technologies" },
+  { value: "4+",  label: "Projects shipped" },
+  { value: "2",   label: "Internships" },
+  { value: "15+", label: "Technologies" },
 ];
 
 const AboutSection = () => {
@@ -16,110 +16,123 @@ const AboutSection = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Reveal heading
+      // Heading line draw
+      gsap.fromTo(".about-line",
+        { width: "0%" },
+        { width: "100%", duration: 0.8, ease: "power3.out",
+          scrollTrigger: { trigger: ".about-line", start: "top 88%", once: true } }
+      );
+
       gsap.fromTo(".about-heading",
-        { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out",
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 0.7, ease: "power3.out",
           scrollTrigger: { trigger: ".about-heading", start: "top 88%", once: true } }
       );
-      // Reveal photo from left
+
       gsap.fromTo(".about-photo",
-        { opacity: 0, x: -70 },
+        { opacity: 0, x: -50 },
         { opacity: 1, x: 0, duration: 0.9, ease: "power3.out",
           scrollTrigger: { trigger: ".about-photo", start: "top 85%", once: true } }
       );
-      // Reveal text from right
-      gsap.fromTo(".about-text",
-        { opacity: 0, x: 70 },
-        { opacity: 1, x: 0, duration: 0.9, ease: "power3.out",
-          scrollTrigger: { trigger: ".about-text", start: "top 85%", once: true } }
+
+      gsap.fromTo(".about-text-block",
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", stagger: 0.12,
+          scrollTrigger: { trigger: ".about-text-block", start: "top 85%", once: true } }
       );
-      // Stats pop in
+
       gsap.fromTo(".about-stat",
-        { opacity: 0, y: 30, scale: 0.88 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "back.out(1.6)", stagger: 0.1,
+        { opacity: 0, y: 24, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.4)", stagger: 0.1,
           scrollTrigger: { trigger: ".about-stat", start: "top 90%", once: true } }
       );
     }, sectionRef);
-
     return () => ctx.revert();
   }, []);
 
   return (
-    <section id="about" ref={sectionRef} className="py-28 md:py-36">
+    <section id="about" ref={sectionRef} className="py-28 md:py-36" style={{ background: "#0A0A0A" }}>
       <div className="container mx-auto px-6 max-w-6xl">
 
-        {/* Heading */}
-        <div className="about-heading text-center mb-20">
-          <span className="section-label mb-5 inline-flex">About</span>
-          <h2 className="text-4xl md:text-5xl font-bold mt-4">
-            Who I <span className="text-gradient">Am</span>
-          </h2>
+        {/* Section header */}
+        <div className="about-heading mb-20 opacity-0">
+          <span className="section-label mb-4 inline-flex">About</span>
+          <div className="flex items-end gap-6 mt-4">
+            <h2 className="text-4xl md:text-5xl font-black tracking-tight" style={{ color: "#FFFFFF" }}>
+              Who I Am
+            </h2>
+            {/* Animated line */}
+            <div className="about-line hidden md:block h-px flex-1 mb-3" style={{ background: "#222222", width: 0 }} />
+          </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-16 lg:gap-24 items-center">
+        <div className="grid md:grid-cols-2 gap-16 lg:gap-24 items-start">
 
-          {/* Photo */}
-          <div className="about-photo relative mx-auto md:mx-0 will-change-transform">
-            <div className="relative w-[280px] h-[340px] md:w-[300px] md:h-[380px] mx-auto">
-              {/* Offset decorative block */}
-              <div className="absolute inset-0 translate-x-4 translate-y-4 rounded-3xl border border-primary/20 bg-primary/5" />
+          {/* Photo col */}
+          <div className="about-photo opacity-0">
+            <div className="relative w-full max-w-[320px] mx-auto md:mx-0">
               {/* Photo */}
-              <div className="relative w-full h-full rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
-                <img
-                  src={profilePhoto}
-                  alt="Touseef Ur Rehman"
+              <div style={{ aspectRatio: "4/5", borderRadius: "8px", overflow: "hidden", border: "1px solid #1A1A1A" }}>
+                <img src={profilePhoto} alt="Muhammad Touseef ur Rehman"
                   className="w-full h-full object-cover object-top"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent" />
+                  style={{ filter: "grayscale(15%)" }}
+                  loading="lazy" decoding="async" />
               </div>
-            </div>
 
-            {/* Pill tags below photo */}
-            <div className="absolute -bottom-5 left-0 right-0 flex justify-center gap-2 flex-wrap px-4">
-              {["Python", "React", "Flask", "AI/ML"].map((tag) => (
-                <span
-                  key={tag}
-                  className="text-[11px] font-semibold px-3 py-1.5 rounded-full glass border border-primary/20 text-primary"
-                >
-                  {tag}
-                </span>
-              ))}
+              {/* Floating skill chips */}
+              <div className="flex flex-wrap gap-2 mt-5">
+                {["PyTorch", "React", "FastAPI", "YOLOv26", "Next.js"].map((t) => (
+                  <span key={t} className="tag">{t}</span>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Text */}
-          <div className="about-text will-change-transform mt-8 md:mt-0">
-            <h3 className="text-2xl md:text-3xl font-bold mb-5 leading-snug">
-              Building at the intersection<br />
-              of <span className="text-gradient">AI and the Web</span>
-            </h3>
+          {/* Text col */}
+          <div className="mt-4 md:mt-12 space-y-6">
+            <div className="about-text-block opacity-0">
+              <p className="text-base md:text-lg leading-[1.85]" style={{ color: "#EBEBEB" }}>
+                I'm a Computer Science graduate from{" "}
+                <span style={{ color: "#FFFFFF", fontWeight: 600 }}>HITEC University Taxila</span>{" "}
+                (2022–2026) with a strong foundation in both machine learning and full-stack web development.
+              </p>
+            </div>
 
-            <p className="text-muted-foreground text-sm md:text-base leading-[1.85] mb-4">
-              I'm a developer who works equally at home in Python ML pipelines and React
-              frontends. My work spans predictive models, NLP tools, and full-stack web
-              applications — always built with clean, production-quality code.
-            </p>
+            <div className="about-text-block opacity-0">
+              <p className="text-sm md:text-base leading-[1.85]" style={{ color: "#888888" }}>
+                I've worked on production ML systems — object detection pipelines, time-series
+                forecasting models — and built full-stack products end to end. I co-founded{" "}
+                <a href="https://duonex.net" target="_blank" rel="noopener noreferrer"
+                  className="font-semibold transition-colors" style={{ color: "#22C55E" }}>
+                  Duonex
+                </a>
+                , a studio delivering ML/AI, web, UI/UX, and Android services.
+              </p>
+            </div>
 
-            <p className="text-muted-foreground text-sm md:text-base leading-[1.85] mb-10">
-              Currently studying <span className="text-foreground font-medium">BS Computer Science</span> at
-              HITEC University Taxila (GPA 3.27/4.0), I've interned at RedFort360 (React & Flask) and
-              Elevvo (ML / computer vision), and I'm always looking for the next challenging problem to solve.
-            </p>
+            <div className="about-text-block opacity-0">
+              <p className="text-sm leading-[1.85]" style={{ color: "#555555" }}>
+                I care about building software with real utility — especially projects that account
+                for real-world constraints like unreliable internet and infrastructure gaps common
+                in Pakistan.
+              </p>
+            </div>
+
+            {/* Divider */}
+            <div className="about-text-block opacity-0 pt-4">
+              <div style={{ height: "1px", background: "#1A1A1A" }} />
+            </div>
 
             {/* Stats */}
-            <div ref={counterRef} className="grid grid-cols-3 gap-4">
+            <div ref={counterRef} className="grid grid-cols-3 gap-2 sm:gap-4 pt-2">
               {stats.map((s) => (
-                <div
-                  key={s.label}
-                  className="about-stat text-center rounded-2xl border border-white/8 bg-white/3 p-5 hover:border-primary/30 hover:-translate-y-1 transition-all duration-200 cursor-default will-change-transform"
-                >
-                  <p className="text-3xl font-extrabold text-gradient mb-1">
+                <div key={s.label} className="about-stat opacity-0">
+                  <p className="text-3xl md:text-4xl font-black mb-1" style={{ color: "#22C55E" }}>
                     <AnimatedCounter end={s.value} isVisible={isVisible} />
                   </p>
-                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground">{s.label}</p>
+                  <p className="text-[10px] uppercase tracking-widest font-medium" style={{ color: "#555555" }}>
+                    {s.label}
+                  </p>
                 </div>
               ))}
             </div>

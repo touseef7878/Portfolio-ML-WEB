@@ -11,21 +11,15 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 
-/**
- * No lazy-loading here — all sections are eager so GSAP ScrollTrigger
- * can measure correct scroll positions on first paint.
- * Lazy loading is fine for images/assets (handled by loading="lazy").
- */
 const Index = () => {
   useEffect(() => {
-    // Refresh after fonts / images settle
     refreshScrollTrigger();
     window.addEventListener("load", refreshScrollTrigger);
     return () => window.removeEventListener("load", refreshScrollTrigger);
   }, []);
 
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+    <div className="min-h-screen overflow-x-hidden" style={{ background: "#080C0A", color: "#EBEBEB" }}>
       <Navbar />
       <HeroSection />
       <AboutSection />

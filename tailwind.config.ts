@@ -19,6 +19,16 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        cyan: {
+          300: "#67E8F9",
+          400: "#22D3EE",
+          500: "#06B6D4",
+        },
+        violet: {
+          400: "#A78BFA",
+          500: "#8B5CF6",
+          600: "#7C3AED",
+        },
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -90,4 +100,5 @@ export default {
     },
   },
   plugins: [require("tailwindcss-animate")],
+  safelist: [],
 } satisfies Config;

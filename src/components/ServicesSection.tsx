@@ -1,115 +1,166 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/scrollManager";
-import { Globe, Brain, ChevronDown } from "lucide-react";
+import { Brain, Globe, Smartphone, ArrowRight } from "lucide-react";
 
 const services = [
   {
-    icon: Globe,
-    title: "Web Development",
-    tagline: "From idea to deployed product",
-    desc: "Modern, performant full-stack applications built with React, TypeScript, and Flask.",
-    accentColor: "#3B82F6",
-    details: [
-      "Full-stack apps — React, TypeScript, Flask",
-      "Responsive UI with Tailwind CSS & shadcn/ui",
-      "RESTful API design and integration",
-      "SQLite database modeling",
-      "Performance optimisation & SEO",
-    ],
+    Icon: Brain,
+    number: "01",
+    title: "ML / AI Engineering",
+    desc: "Production ML systems — object detection, time-series forecasting, NLP pipelines. Built with PyTorch, trained on real data, deployed.",
+    items: ["Computer vision (YOLOv26, OpenCV)", "LSTM/GRU time-series forecasting", "BERT & transformer NLP", "MLOps & model evaluation"],
   },
   {
-    icon: Brain,
-    title: "AI / ML Engineering",
-    tagline: "Data-driven intelligent systems",
-    desc: "Predictive models, NLP pipelines, and AI-powered tools built in Python.",
-    accentColor: "#A855F7",
-    details: [
-      "Predictive modeling — Scikit-learn & Python",
-      "NLP & sentiment analysis with NLTK",
-      "Regression and classification pipelines",
-      "Data preprocessing & feature engineering",
-      "Model evaluation & performance tuning",
-    ],
+    Icon: Globe,
+    number: "02",
+    title: "Full-Stack Web",
+    desc: "End-to-end web products — from pixel-perfect React frontends to FastAPI backends and Supabase databases.",
+    items: ["React / Next.js + TypeScript", "FastAPI / Flask REST APIs", "Supabase RLS & PostgreSQL", "Vercel / Render deployments"],
+  },
+  {
+    Icon: Smartphone,
+    number: "03",
+    title: "Android Development",
+    desc: "Native Android apps built under Duonex — offline-first, clean UX, and built for Pakistan's market realities.",
+    items: ["Native Android", "Offline-first architecture", "API integration & auth", "Local market UX"],
   },
 ];
 
+/* Split a string into individual <span> chars wrapped in overflow-hidden masks */
+const SplitText = ({ text, className, style }: { text: string; className?: string; style?: React.CSSProperties }) => (
+  <span className={className} style={{ ...style, display: "inline-block" }} aria-label={text}>
+    {text.split("").map((char, i) => (
+      <span
+        key={i}
+        className="services-char"
+        style={{ display: "inline-block", overflow: "hidden", lineHeight: 1 }}
+      >
+        <span
+          className="services-char-inner"
+          style={{ display: "inline-block" }}
+        >
+          {char === " " ? "\u00A0" : char}
+        </span>
+      </span>
+    ))}
+  </span>
+);
+
 const ServicesSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  const [expanded, setExpanded] = useState<number | null>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(".services-heading",
-        { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out",
-          scrollTrigger: { trigger: ".services-heading", start: "top 88%", once: true } }
+
+      /* ── Step 1: Character reveal on heading ── */
+      const chars = gsap.utils.toArray<HTMLElement>(".services-char-inner");
+
+      gsap.fromTo(
+        chars,
+        { y: "110%", rotation: 8, opacity: 0 },
+        {
+          y: "0%",
+          rotation: 0,
+          opacity: 1,
+          duration: 0.55,
+          ease: "power3.out",
+          stagger: 0.028,
+          scrollTrigger: {
+            trigger: ".services-heading",
+            start: "top 88%",
+            once: true,
+          },
+        }
       );
-      gsap.fromTo(".service-card",
-        { opacity: 0, y: 70 },
-        { opacity: 1, y: 0, duration: 0.75, ease: "power3.out", stagger: 0.18,
-          scrollTrigger: { trigger: ".service-card", start: "top 85%", once: true } }
+
+      /* Sub-label fade */
+      gsap.fromTo(
+        ".services-label",
+        { opacity: 0, y: 14 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          ease: "power3.out",
+          scrollTrigger: { trigger: ".services-heading", start: "top 88%", once: true },
+        }
       );
+
+      /* ── Step 2: Cards scale up from center (lens focus) ── */
+      gsap.fromTo(
+        ".service-card",
+        { opacity: 0, scale: 0.92 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.6,
+          ease: "power2.out",
+          stagger: 0.14,
+          scrollTrigger: {
+            trigger: ".service-card",
+            start: "top 85%",
+            once: true,
+          },
+        }
+      );
+
     }, sectionRef);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section id="services" ref={sectionRef} className="py-28 md:py-36">
-      <div className="container mx-auto px-6 max-w-6xl">
+    <section id="services" ref={sectionRef} className="py-28 md:py-36" style={{ background: "#0A0A0A" }}>
+      <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
 
-        <div className="services-heading text-center mb-20 will-change-transform">
-          <span className="section-label mb-5 inline-flex">Services</span>
-          <h2 className="text-4xl md:text-5xl font-bold mt-4">
-            What I <span className="text-gradient">Offer</span>
+        {/* ── Heading ── */}
+        <div className="services-heading mb-20">
+          <span className="services-label section-label mb-4 inline-flex opacity-0">Services</span>
+          <h2
+            className="text-4xl md:text-5xl font-black tracking-tight mt-4"
+            style={{ color: "#FFFFFF", lineHeight: 1.1 }}
+          >
+            <SplitText text="What I Offer" />
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          {services.map((s, i) => (
+        {/* ── Cards ── */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {services.map((s) => (
             <div
               key={s.title}
-              className="service-card bg-card border border-white/8 rounded-2xl p-8 hover:border-white/16 transition-all duration-300 shadow-sm will-change-transform"
+              className="service-card group opacity-0 rounded-xl p-7 transition-colors duration-300"
+              style={{ background: "#111111", border: "1px solid #1A1A1A" }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLElement).style.borderColor = "#2A2A2A";
+                (e.currentTarget as HTMLElement).style.background  = "#141414";
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLElement).style.borderColor = "#1A1A1A";
+                (e.currentTarget as HTMLElement).style.background  = "#111111";
+              }}
             >
-              {/* Icon */}
-              <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center mb-6"
-                style={{ background: `${s.accentColor}12`, border: `1px solid ${s.accentColor}25` }}
-              >
-                <s.icon size={22} style={{ color: s.accentColor }} strokeWidth={1.75} />
+              {/* Number + icon */}
+              <div className="flex items-center justify-between mb-8">
+                <div
+                  className="w-10 h-10 rounded-lg flex items-center justify-center"
+                  style={{ background: "rgba(34,197,94,0.07)", border: "1px solid rgba(34,197,94,0.12)" }}
+                >
+                  <s.Icon size={18} style={{ color: "#22C55E" }} strokeWidth={1.5} />
+                </div>
+                <span className="text-xs font-mono" style={{ color: "#2A2A2A" }}>{s.number}</span>
               </div>
 
-              <h3 className="font-bold text-xl mb-1">{s.title}</h3>
-              <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: s.accentColor }}>
-                {s.tagline}
-              </p>
-              <p className="text-sm text-muted-foreground leading-[1.8] mb-6">{s.desc}</p>
+              <h3 className="text-base font-bold mb-3" style={{ color: "#FFFFFF" }}>{s.title}</h3>
+              <p className="text-xs leading-[1.8] mb-6" style={{ color: "#888888" }}>{s.desc}</p>
 
-              {/* Expandable detail list */}
-              <div
-                className="overflow-hidden transition-all duration-500"
-                style={{ maxHeight: expanded === i ? "300px" : "0px", opacity: expanded === i ? 1 : 0 }}
-              >
-                <ul className="mb-6 space-y-2.5">
-                  {s.details.map((d, j) => (
-                    <li key={j} className="flex items-start gap-2.5 text-sm text-muted-foreground">
-                      <span className="mt-1.5 w-1 h-1 rounded-full shrink-0" style={{ background: s.accentColor }} />
-                      {d}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <button
-                onClick={() => setExpanded(expanded === i ? null : i)}
-                className="flex items-center gap-1.5 text-sm font-medium transition-colors hover:opacity-75"
-                style={{ color: s.accentColor }}
-              >
-                {expanded === i ? "Show less" : "Learn more"}
-                <ChevronDown
-                  size={14}
-                  className={`transition-transform duration-300 ${expanded === i ? "rotate-180" : ""}`}
-                />
-              </button>
+              <ul className="space-y-2">
+                {s.items.map((item) => (
+                  <li key={item} className="flex items-center gap-2 text-xs" style={{ color: "#555555" }}>
+                    <ArrowRight size={10} style={{ color: "#22C55E", flexShrink: 0 }} />
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>
